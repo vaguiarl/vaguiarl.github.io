@@ -345,16 +345,7 @@ function App() {
         <section id="home" className="hero" aria-labelledby="hero-title">
           <div className="hero-orbit orbit-one" aria-hidden="true" />
           <div className="hero-orbit orbit-two" aria-hidden="true" />
-          <div className="hero-image">
-            <img
-              src="./victor-aguiar.jpg"
-              alt="Portrait of Victor H. Aguiar"
-              width="2160"
-              height="1440"
-              fetchPriority="high"
-            />
-          </div>
-          <div className="hero-sun" aria-hidden="true"><span>VA</span></div>
+          <div className="hero-sun" aria-hidden="true" />
           <div className="page-shell hero-grid">
             <div className="hero-copy">
               <p className="eyebrow"><span /> Economics · Simon Fraser University</p>
@@ -566,6 +557,22 @@ function App() {
                 <p className="section-number">04</p>
                 <p className="eyebrow"><span /> About</p>
                 <h2 id="about-title">Theory, data,<br /><em>and the connecting tissue in between.</em></h2>
+                <figure className="about-portrait">
+                  <div className="about-portrait-frame">
+                    <img
+                      src="./victor-aguiar.jpg"
+                      alt="Black and white portrait of Victor H. Aguiar"
+                      width="1125"
+                      height="1118"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <figcaption>
+                    Victor H. Aguiar
+                    <span>Economist · researcher · problem solver</span>
+                  </figcaption>
+                </figure>
               </div>
 
               <div className="about-copy">

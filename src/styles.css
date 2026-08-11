@@ -259,47 +259,19 @@ nav {
   background: var(--paper);
 }
 
-.hero::after {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  inset: 5.25rem 0 5.5rem;
-  background:
-    linear-gradient(90deg, rgba(247, 240, 228, 0.98) 0%, rgba(247, 240, 228, 0.84) 30%, rgba(247, 240, 228, 0.18) 58%, rgba(247, 240, 228, 0.05) 100%),
-    linear-gradient(0deg, rgba(42, 29, 24, 0.16), transparent 34%);
-  pointer-events: none;
-}
-
-.hero-image {
-  position: absolute;
-  z-index: 0;
-  inset: 5.25rem 0 5.5rem;
-  overflow: hidden;
-  background: var(--paper);
-}
-
-.hero-image img {
-  display: block;
-  width: auto;
-  height: 100%;
-  margin-left: auto;
-  object-fit: contain;
-  object-position: right center;
-  filter: contrast(0.98);
-}
-
 .hero-sun {
   position: absolute;
-  z-index: 2;
-  top: clamp(7rem, 13vh, 10rem);
-  left: clamp(1.5rem, 6vw, 7rem);
-  width: clamp(4rem, 6vw, 6rem);
+  z-index: 1;
+  top: 48%;
+  right: clamp(4rem, 11vw, 11rem);
+  width: clamp(14rem, 25vw, 23rem);
   aspect-ratio: 1;
   display: grid;
   place-items: center;
   border-radius: 50%;
   color: var(--gold);
-  opacity: 0.82;
+  opacity: 0.66;
+  transform: translateY(-50%);
 }
 
 .hero-sun::before {
@@ -307,42 +279,21 @@ nav {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: repeating-conic-gradient(var(--gold) 0 1.5deg, transparent 1.5deg 30deg);
-  -webkit-mask: radial-gradient(circle, transparent 0 67%, #000 68%);
-  mask: radial-gradient(circle, transparent 0 67%, #000 68%);
+  background: repeating-conic-gradient(from -0.5deg, var(--gold) 0 1deg, transparent 1deg 15deg);
+  -webkit-mask: radial-gradient(circle, transparent 0 67%, #000 67.5%);
+  mask: radial-gradient(circle, transparent 0 67%, #000 67.5%);
 }
 
 .hero-sun::after {
   content: "";
   position: absolute;
-  inset: 20%;
+  inset: 23%;
   border: 1px solid var(--gold);
   border-radius: inherit;
-}
-
-.hero-sun > span {
-  position: relative;
-  z-index: 2;
-  display: block;
-  font-family: "Bodoni 72 Smallcaps", Didot, var(--serif);
-  font-size: clamp(1.05rem, 1.7vw, 1.45rem);
-  font-weight: 500;
-  font-style: italic;
-  letter-spacing: -0.15em;
-  transform: translateX(-0.09rem);
-}
-
-.hero-sun > span::after {
-  content: "";
-  position: absolute;
-  left: 91%;
-  bottom: -0.14rem;
-  width: clamp(0.55rem, 0.85vw, 0.78rem);
-  height: clamp(0.3rem, 0.5vw, 0.45rem);
-  border-bottom: 1px solid currentColor;
-  border-radius: 0 0 100% 0;
-  transform: rotate(-10deg);
-  transform-origin: left bottom;
+  background: radial-gradient(circle, var(--gold) 0 0.16rem, transparent 0.18rem);
+  box-shadow:
+    0 0 0 clamp(0.8rem, 1.8vw, 1.35rem) var(--paper),
+    0 0 0 calc(clamp(0.8rem, 1.8vw, 1.35rem) + 1px) rgba(197, 100, 63, 0.42);
 }
 
 .hero-grid {
@@ -471,8 +422,10 @@ nav {
 }
 
 .hero-role {
-  grid-column: 7 / span 2;
+  width: min(100%, 15rem);
+  grid-column: 10 / -1;
   grid-row: 2;
+  justify-self: end;
   align-self: end;
   padding: 0.95rem 1rem;
   border-left: 2px solid var(--clay);
@@ -1117,6 +1070,73 @@ a.paper-row:hover .paper-arrow {
   grid-row: 1 / 3;
 }
 
+.about-portrait {
+  width: clamp(11rem, 16vw, 15.5rem);
+  margin: 3.2rem 0 0;
+  grid-column: 2;
+}
+
+.about-portrait-frame {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 0.42rem;
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+
+.about-portrait-frame::before,
+.about-portrait-frame::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 2.2rem;
+  height: 2.2rem;
+  pointer-events: none;
+}
+
+.about-portrait-frame::before {
+  top: -0.48rem;
+  left: -0.48rem;
+  border-top: 1px solid var(--gold);
+  border-left: 1px solid var(--gold);
+}
+
+.about-portrait-frame::after {
+  right: -0.48rem;
+  bottom: -0.48rem;
+  border-right: 1px solid var(--clay);
+  border-bottom: 1px solid var(--clay);
+}
+
+.about-portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+}
+
+.about-portrait figcaption {
+  margin-top: 1rem;
+  color: var(--cacao);
+  font-size: 0.62rem;
+  font-weight: 750;
+  letter-spacing: 0.11em;
+  line-height: 1.55;
+  text-transform: uppercase;
+}
+
+.about-portrait figcaption span {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--ink-soft);
+  font-family: var(--serif);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
 .about-copy {
   padding-top: 4.2rem;
 }
@@ -1654,29 +1674,12 @@ footer {
     padding-top: 4.6rem;
   }
 
-  .hero::after,
-  .hero-image {
-    inset: 4.6rem 0 0;
-  }
-
-  .hero::after {
-    background:
-      linear-gradient(90deg, rgba(247, 240, 228, 0.98), rgba(247, 240, 228, 0.82)),
-      linear-gradient(0deg, rgba(42, 29, 24, 0.12), transparent 42%);
-  }
-
-  .hero-image img {
-    width: 100%;
-    margin-left: 0;
-    object-fit: cover;
-    object-position: center 40%;
-    opacity: 0.52;
-  }
-
   .hero-sun {
-    top: 7rem;
-    right: 1.2rem;
-    left: auto;
+    top: 7.2rem;
+    right: -1rem;
+    width: clamp(7.5rem, 34vw, 9.5rem);
+    opacity: 0.42;
+    transform: none;
   }
 
   .hero-grid {
@@ -1837,6 +1840,12 @@ footer {
 
   .about-copy {
     padding-top: 0;
+  }
+
+  .about-portrait {
+    width: min(58vw, 14rem);
+    margin: 2.5rem auto 3.5rem;
+    grid-column: 1;
   }
 
   .timeline {
