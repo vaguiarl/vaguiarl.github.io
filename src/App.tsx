@@ -70,7 +70,7 @@ const research: ResearchItem[] = [
     year: "2025",
     kind: "working",
     title: "A Rationalization of the Weak Axiom of Revealed Preference",
-    authors: "Victor H. Aguiar, Per Hjertstrand, Roberto Serrano & Ozgur Evren",
+    authors: "Victor H. Aguiar, Per Hjertstrand, Roberto Serrano & Özgür Evren",
     venue: "Second round revision, The Economic Journal",
     href: "https://www.researchgate.net/publication/333547091_A_Rationalization_of_the_Weak_Axiom_of_Revealed_Preference",
   },
@@ -78,7 +78,7 @@ const research: ResearchItem[] = [
     year: "2024",
     kind: "working",
     title: "Entangled vs. Separable Choice",
-    authors: "Victor H. Aguiar, Nail Kashaev & Martin Plavala",
+    authors: "Victor H. Aguiar, Nail Kashaev & Martin Plávala",
     venue: "Working paper",
     href: "https://www.researchgate.net/publication/378938384_Entangled_vs_Separable_Choice",
   },
@@ -86,7 +86,7 @@ const research: ResearchItem[] = [
     year: "2023",
     kind: "working",
     title: "Dynamic and Stochastic Rational Behavior",
-    authors: "Victor H. Aguiar, Charles Gauthier, Nail Kashaev & Martin Plavala",
+    authors: "Victor H. Aguiar, Charles Gauthier, Nail Kashaev & Martin Plávala",
     venue: "Working paper",
     href: "https://www.researchgate.net/publication/370026321_Dynamic_and_Stochastic_Rational_Behavior",
   },
@@ -94,7 +94,7 @@ const research: ResearchItem[] = [
     year: "2020",
     kind: "working",
     title: "Estimating High Dimensional Demand under Bounded Rationality: The ESMAX Demand System",
-    authors: "Victor H. Aguiar & Nikolai Riabov",
+    authors: "Victor H. Aguiar & Nickolai Riabov",
     venue: "Working paper",
     href: "https://www.researchgate.net/publication/341685961_Estimating_High_Dimensional_Demand_under_Bounded_Rationality_The_ESMAX_Demand_System",
   },
@@ -118,7 +118,7 @@ const research: ResearchItem[] = [
     year: "2023",
     kind: "publication",
     title: "Random Utility and Limited Consideration",
-    authors: "Victor H. Aguiar, Maria Jose Boccardi, Nail Kashaev & Jeongbin Kim",
+    authors: "Victor H. Aguiar, María José Boccardi, Nail Kashaev & Jeongbin Kim",
     venue: "Quantitative Economics, 14(1), 71–116",
     href: "https://doi.org/10.3982/QE1861",
     note: "Top cited",
@@ -181,7 +181,7 @@ const research: ResearchItem[] = [
     year: "2016",
     kind: "publication",
     title: "Satisficing and Stochastic Choice",
-    authors: "Victor H. Aguiar, Maria Jose Boccardi & Mark Dean",
+    authors: "Victor H. Aguiar, María José Boccardi & Mark Dean",
     venue: "Journal of Economic Theory, 166, 445–482",
   },
   {
@@ -217,21 +217,21 @@ const research: ResearchItem[] = [
 ];
 
 const coauthors = [
-  { name: "Roberto Serrano", href: "https://economics.brown.edu/people/roberto-serrano" },
   { name: "Nail Kashaev", href: "https://nail.kashaev.ru/" },
-  { name: "Mark Dean", href: "https://econ.columbia.edu/content/mark-dean" },
-  { name: "Maria Jose Boccardi" },
-  { name: "Roland Pongou" },
-  { name: "Jean-Baptiste Tondji" },
-  { name: "Nikolai Riabov" },
-  { name: "Mert Kimya" },
-  { name: "Roy Allen" },
-  { name: "Per Hjertstrand" },
+  { name: "Per Hjertstrand", href: "https://www.ifn.se/en/researchers/affiliated-researchers/per-hjertstrand/" },
+  { name: "Roberto Serrano", href: "https://economics.brown.edu/people/roberto-serrano" },
+  { name: "Özgür Evren", href: "https://www.nes.ru/about/profiles/faculty/tenure-line/Ozgur-Evren" },
+  { name: "Martin Plávala", href: "https://mplavala.github.io/" },
   { name: "Charles Gauthier", href: "https://www.charlesgauthier.me/" },
-  { name: "Martin Plavala" },
-  { name: "Jeongbin Kim" },
-  { name: "Ozgur Evren" },
-];
+  { name: "Nickolai Riabov", href: "https://www.linkedin.com/in/causal-ml/" },
+  { name: "María José Boccardi", href: "https://www.mariajoseboccardi.com/" },
+  { name: "Jeongbin Kim", href: "https://cosspp.fsu.edu/economics/faculty/jeongbin-kim/" },
+  { name: "Roy Allen", href: "https://sites.google.com/view/royallen" },
+  { name: "Mert Kimya", href: "https://profiles.sydney.edu.au/mert.kimya" },
+  { name: "Roland Pongou", href: "https://uniweb.uottawa.ca/network/profile/members/1005?lang=en" },
+  { name: "Jean-Baptiste Tondji", href: "https://sites.google.com/site/jbtondjicom/" },
+  { name: "Mark Dean", href: "https://econ.columbia.edu/econpeople/mark-dean/" },
+] satisfies ReadonlyArray<{ name: string; href: string }>;
 
 const kindLabels: Record<ResearchKind, string> = {
   working: "Working paper",
@@ -674,15 +674,11 @@ function App() {
                 <h3>Ideas are<br /><em>collaborative.</em></h3>
               </div>
               <div className="coauthor-cloud">
-                {coauthors.map((coauthor) =>
-                  coauthor.href ? (
-                    <a href={coauthor.href} target="_blank" rel="noreferrer" key={coauthor.name}>
-                      {coauthor.name} <ExternalArrow />
-                    </a>
-                  ) : (
-                    <span key={coauthor.name}>{coauthor.name}</span>
-                  ),
-                )}
+                {coauthors.map((coauthor) => (
+                  <a href={coauthor.href} target="_blank" rel="noreferrer" key={coauthor.name}>
+                    {coauthor.name} <ExternalArrow />
+                  </a>
+                ))}
               </div>
             </div>
           </div>

@@ -1396,8 +1396,7 @@ a.paper-row:hover .paper-arrow {
   align-content: flex-start;
 }
 
-.coauthor-cloud a,
-.coauthor-cloud > span {
+.coauthor-cloud a {
   padding: 0.8rem 1rem;
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
