@@ -710,7 +710,7 @@ function App() {
 
             <div className="contact-links">
               <a href="https://scholar.google.ca/citations?hl=en&user=N2ceyz4AAAAJ" target="_blank" rel="noreferrer">Google Scholar <ExternalArrow /></a>
-              <a href="https://www.linkedin.com/in/victor-aguiar-ph-d-698b792a/" target="_blank" rel="noreferrer">LinkedIn <ExternalArrow /></a>
+              <a href="https://www.linkedin.com/in/victor-aguiar-ph-d-698b792a" target="_blank" rel="noreferrer">LinkedIn <ExternalArrow /></a>
               <a href="https://www.sfu.ca/economics/about/faculty/current/victor-aguiar.html" target="_blank" rel="noreferrer">SFU Profile <ExternalArrow /></a>
               <a href={cvUrl} target="_blank" rel="noreferrer">Curriculum Vitae <ExternalArrow /></a>
             </div>
