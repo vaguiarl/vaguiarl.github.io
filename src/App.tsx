@@ -556,7 +556,7 @@ function App() {
               <div className="about-heading">
                 <p className="section-number">04</p>
                 <p className="eyebrow"><span /> About</p>
-                <h2 id="about-title">Theory, data,<br /><em>and the connecting tissue in between.</em></h2>
+                <h2 id="about-title">Solutions, theory,<br />data, <em>and the connecting tissue in between.</em></h2>
                 <figure className="about-portrait">
                   <div className="about-portrait-frame">
                     <img
