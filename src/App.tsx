@@ -380,12 +380,12 @@ function App() {
             </blockquote>
           </div>
 
-          <div className="hero-status" aria-label="Current roles and recognition">
+          <div className="hero-status" aria-label="Current roles, recognition, and languages">
             <div className="page-shell status-grid">
               <p><span>Now</span> Associate Professor, SFU</p>
               <p><span>Editorial</span> Associate Editor, JEBO</p>
-              <p><span>Recognition</span> George Borts Prize · REStud Excellence</p>
-              <p><span>Public science</span> Generative AI diffusion</p>
+              <p><span>Recognition</span> Borts · Grimes · REStud</p>
+              <p><span>Languages</span> English · French · Spanish</p>
             </div>
           </div>
           <div className="heritage-band" aria-hidden="true" />
@@ -553,14 +553,6 @@ function App() {
                   <p>Computational Methods in Economics</p>
                 </div>
 
-                <div className="teaching-award">
-                  <span aria-hidden="true">✦</span>
-                  <p><strong>Graduate Economics Professor of the Year</strong><br />Western University · 2017</p>
-                </div>
-                <div className="teaching-award">
-                  <span aria-hidden="true">✦</span>
-                  <p><strong>George Borts Prize</strong><br />Outstanding Ph.D. dissertation · Brown Economics · 2016</p>
-                </div>
               </div>
             </div>
           </div>
@@ -619,6 +611,55 @@ function App() {
               <article><time>2024</time><span /><p><strong>Simon Fraser University</strong>Joined the Department of Economics</p></article>
               <article><time>2017</time><span /><p><strong>Brown University</strong>PhD in Economics</p></article>
             </div>
+
+            <section className="recognition-block" aria-labelledby="recognition-title">
+              <div className="recognition-head">
+                <div>
+                  <p className="eyebrow"><span /> Recognition</p>
+                  <h3 id="recognition-title">Selected <em>distinctions.</em></h3>
+                </div>
+                <p>Across research, teaching, and academic formation.</p>
+              </div>
+
+              <div className="recognition-grid">
+                <article className="recognition-card">
+                  <span className="recognition-number" aria-hidden="true">01</span>
+                  <p className="recognition-kind">Dissertation</p>
+                  <h4>George Borts Prize</h4>
+                  <p>Outstanding Ph.D. dissertation<br />Brown University · 2016</p>
+                </article>
+                <article className="recognition-card">
+                  <span className="recognition-number" aria-hidden="true">02</span>
+                  <p className="recognition-kind">Research fellowship</p>
+                  <h4>Christopher J. Grimes Faculty Fellowship</h4>
+                  <p>Microeconomic Theory<br />Western University · 2021 to 2026</p>
+                </article>
+                <article className="recognition-card">
+                  <span className="recognition-number" aria-hidden="true">03</span>
+                  <p className="recognition-kind">Scholarly service</p>
+                  <h4>Excellence in Refereeing</h4>
+                  <p>Review of Economic Studies<br />2023 recognition · announced 2025</p>
+                </article>
+                <article className="recognition-card">
+                  <span className="recognition-number" aria-hidden="true">04</span>
+                  <p className="recognition-kind">Teaching</p>
+                  <h4>Graduate Economics Professor of the Year</h4>
+                  <p>Western University · 2017</p>
+                </article>
+                <article className="recognition-card">
+                  <span className="recognition-number" aria-hidden="true">05</span>
+                  <p className="recognition-kind">Research reach</p>
+                  <h4>Wiley top cited recognition</h4>
+                  <p><em>Random Utility and Limited Consideration</em><br />Quantitative Economics</p>
+                </article>
+                <article className="recognition-card">
+                  <span className="recognition-number" aria-hidden="true">06</span>
+                  <p className="recognition-kind">Ecuadorian studies</p>
+                  <h4>Valedictorian</h4>
+                  <p>FLACSO Ecuador · 2012<br />Catholic University of Ecuador · 2010</p>
+                </article>
+              </div>
+            </section>
 
             <div className="coauthors-block">
               <div>
