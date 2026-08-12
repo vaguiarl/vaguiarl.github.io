@@ -292,6 +292,22 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const scrollToCurrentHash = () => {
+      const id = decodeURIComponent(window.location.hash.slice(1));
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+      const header = document.querySelector<HTMLElement>(".site-header");
+      const top = window.scrollY + target.getBoundingClientRect().top - (header?.offsetHeight ?? 0);
+      window.scrollTo({ top, behavior: "instant" });
+    };
+
+    scrollToCurrentHash();
+    window.addEventListener("hashchange", scrollToCurrentHash);
+    return () => window.removeEventListener("hashchange", scrollToCurrentHash);
+  }, []);
+
+  useEffect(() => {
     const mobileQuery = window.matchMedia("(max-width: 800px)");
     const closeAtDesktop = (event: MediaQueryListEvent) => {
       if (!event.matches) setMenuOpen(false);
