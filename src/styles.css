@@ -644,7 +644,7 @@ nav {
 
 .featured-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
@@ -661,6 +661,14 @@ nav {
 
 .featured-paper + .featured-paper {
   border-left: 1px solid var(--line);
+}
+
+.featured-paper:nth-child(odd) {
+  border-left: 0;
+}
+
+.featured-paper:nth-child(n + 3) {
+  border-top: 1px solid var(--line);
 }
 
 .featured-paper:hover {
