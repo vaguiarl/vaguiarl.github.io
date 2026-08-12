@@ -40,7 +40,7 @@ const featuredResearch = [
     year: "2025",
     status: "Revise & resubmit",
     title: "A Rationalization of the Weak Axiom of Revealed Preference",
-    copy: "An Afriat style foundation for weak revealed preference, allowing coherent intransitive choice and counterfactual analysis.",
+    copy: "A foundation in the spirit of Afriat for weak revealed preference, allowing coherent intransitive choice and counterfactual analysis.",
     illustration: "./illustrations/paper_weak_axiom.webp",
     illustrationAlt: "A circular choice system opening into a clear ordered path",
     href: "https://www.researchgate.net/publication/333547091_A_Rationalization_of_the_Weak_Axiom_of_Revealed_Preference",
@@ -80,7 +80,7 @@ const research: ResearchItem[] = [
     title: "Entangled vs. Separable Choice",
     authors: "Victor H. Aguiar, Nail Kashaev & Martin Plávala",
     venue: "Working paper",
-    href: "https://www.researchgate.net/publication/378938384_Entangled_vs_Separable_Choice",
+    href: "https://arxiv.org/abs/2403.09045",
   },
   {
     year: "2023",
@@ -88,7 +88,7 @@ const research: ResearchItem[] = [
     title: "Dynamic and Stochastic Rational Behavior",
     authors: "Victor H. Aguiar, Charles Gauthier, Nail Kashaev & Martin Plávala",
     venue: "Working paper",
-    href: "https://www.researchgate.net/publication/370026321_Dynamic_and_Stochastic_Rational_Behavior",
+    href: "https://arxiv.org/abs/2302.04417",
   },
   {
     year: "2020",
@@ -104,15 +104,15 @@ const research: ResearchItem[] = [
     title: "A New Look at the Symmetry of the Slutsky Matrix",
     authors: "Victor H. Aguiar & Roberto Serrano",
     venue: "Journal of Political Economy Microeconomics, 3(2), 289–302",
-    href: "https://www.researchgate.net/publication/363373617_Slutsky_Matrix_Symmetry_A_New_Behavioral_Condition",
+    href: "https://doi.org/10.1086/732650",
   },
   {
-    year: "2024",
+    year: "2025",
     kind: "publication",
     title: "Identification and Estimation of Discrete Choice Models with Unobserved Choice Sets",
     authors: "Victor H. Aguiar & Nail Kashaev",
-    venue: "Journal of Business & Economic Statistics",
-    href: "https://www.researchgate.net/publication/352780243_Identification_and_Estimation_of_Discrete_Choice_Models_with_Unobserved_Choice_Sets",
+    venue: "Journal of Business & Economic Statistics, 43(1), 204–215",
+    href: "https://doi.org/10.1080/07350015.2024.2342731",
   },
   {
     year: "2023",
@@ -121,15 +121,15 @@ const research: ResearchItem[] = [
     authors: "Victor H. Aguiar, María José Boccardi, Nail Kashaev & Jeongbin Kim",
     venue: "Quantitative Economics, 14(1), 71–116",
     href: "https://doi.org/10.3982/QE1861",
-    note: "Top cited",
+    note: "Wiley recognition",
   },
   {
-    year: "2022",
+    year: "2023",
     kind: "publication",
-    title: "Prices, Profits, Proxies and Production",
-    authors: "Victor H. Aguiar, Roy Allen & Nail Kashaev",
-    venue: "Journal of Econometrics",
-    href: "https://arxiv.org/abs/1810.04697",
+    title: "Prices, Profits, Proxies, and Production",
+    authors: "Victor H. Aguiar, Nail Kashaev & Roy Allen",
+    venue: "Journal of Econometrics, 235(2), 666–693",
+    href: "https://doi.org/10.1016/j.jeconom.2022.06.007",
   },
   {
     year: "2022",
@@ -137,7 +137,7 @@ const research: ResearchItem[] = [
     title: "A Random Attention and Utility Model",
     authors: "Victor H. Aguiar & Nail Kashaev",
     venue: "Journal of Economic Theory, 105487",
-    href: "https://www.researchgate.net/publication/351840460_A_Random_Attention_and_Utility_Model",
+    href: "https://doi.org/10.1016/j.jet.2022.105487",
   },
   {
     year: "2021",
@@ -169,6 +169,7 @@ const research: ResearchItem[] = [
     title: "A Non-Parametric Approach to Testing the Axioms of the Shapley Value with Limited Data",
     authors: "Victor H. Aguiar, Roland Pongou & Jean-Baptiste Tondji",
     venue: "Games and Economic Behavior, 111, 41–63",
+    href: "https://doi.org/10.1016/j.geb.2018.06.003",
   },
   {
     year: "2017",
@@ -176,6 +177,7 @@ const research: ResearchItem[] = [
     title: "Slutsky Matrix Norms: The Size, Classification, and Comparative Statics of Bounded Rationality",
     authors: "Victor H. Aguiar & Roberto Serrano",
     venue: "Journal of Economic Theory, 172, 163–201",
+    href: "https://doi.org/10.1016/j.jet.2017.08.007",
   },
   {
     year: "2016",
@@ -183,6 +185,7 @@ const research: ResearchItem[] = [
     title: "Satisficing and Stochastic Choice",
     authors: "Victor H. Aguiar, María José Boccardi & Mark Dean",
     venue: "Journal of Economic Theory, 166, 445–482",
+    href: "https://doi.org/10.1016/j.jet.2016.08.008",
   },
   {
     year: "2022",
@@ -198,6 +201,7 @@ const research: ResearchItem[] = [
     title: "Classifying Bounded Rationality in Limited Data Sets: A Slutsky Matrix Approach",
     authors: "Victor H. Aguiar & Roberto Serrano",
     venue: "SERIEs, 9(4), 389–421",
+    href: "https://doi.org/10.1007/s13209-018-0178-0",
   },
   {
     year: "2017",
@@ -213,6 +217,7 @@ const research: ResearchItem[] = [
     title: "An Index of Unfairness",
     authors: "Victor H. Aguiar, Roland Pongou, Roberto Serrano & Jean-Baptiste Tondji",
     venue: "Handbook of the Shapley Value, CRC Press",
+    href: "https://doi.org/10.1201/9781351241410-3",
   },
 ];
 
@@ -273,6 +278,11 @@ function App() {
         navLinks.forEach((link) => {
           const active = link.getAttribute("href") === `#${visible.target.id}`;
           link.toggleAttribute("data-active", active);
+          if (active) {
+            link.setAttribute("aria-current", "location");
+          } else {
+            link.removeAttribute("aria-current");
+          }
         });
       },
       { rootMargin: "-35% 0px -55%", threshold: [0, 0.2, 0.6] },
@@ -282,12 +292,52 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!menuOpen) return;
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMenuOpen(false);
+    const mobileQuery = window.matchMedia("(max-width: 800px)");
+    const closeAtDesktop = (event: MediaQueryListEvent) => {
+      if (!event.matches) setMenuOpen(false);
     };
+    mobileQuery.addEventListener("change", closeAtDesktop);
+    return () => mobileQuery.removeEventListener("change", closeAtDesktop);
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const mobileQuery = window.matchMedia("(max-width: 800px)");
+    if (!mobileQuery.matches) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (!mobileQuery.matches) return;
+      const menuToggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
+      const navigation = document.getElementById("primary-navigation");
+      const navLinks = navigation
+        ? Array.from(navigation.querySelectorAll<HTMLAnchorElement>("a[href]")).filter(
+            (link) => link.getClientRects().length > 0,
+          )
+        : [];
+      const focusable = menuToggle ? [menuToggle, ...navLinks] : navLinks;
+
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuToggle?.focus();
+        return;
+      }
+
+      if (event.key !== "Tab" || focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.body.classList.add("menu-open");
     window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.classList.remove("menu-open");
+      window.removeEventListener("keydown", closeOnEscape);
+    };
   }, [menuOpen]);
 
   async function copyEmail() {
@@ -312,7 +362,7 @@ function App() {
 
       <header className="site-header">
         <div className="nav-shell">
-          <a className="wordmark" href="#home" onClick={closeMenu} aria-label="Victor H. Aguiar, home">
+          <a className="wordmark" href="#home" onClick={closeMenu} aria-label="VA, Victor H. Aguiar, home">
             <span className="monogram" aria-hidden="true"><span>VA</span></span>
             <span className="wordmark-name">Victor H. Aguiar</span>
           </a>
@@ -332,6 +382,7 @@ function App() {
           <nav id="primary-navigation" className={menuOpen ? "nav-open" : ""} aria-label="Primary navigation">
             <a className="nav-link" href="#research" onClick={closeMenu}>Research</a>
             <a className="nav-link" href="#teaching" onClick={closeMenu}>Teaching</a>
+            <a className="nav-link" href="#industry" onClick={closeMenu}>Industry / Consulting</a>
             <a className="nav-link" href="#about" onClick={closeMenu}>About</a>
             <a className="nav-link" href="#contact" onClick={closeMenu}>Contact</a>
             <a className="nav-cv" href={cvUrl} target="_blank" rel="noreferrer">
@@ -404,7 +455,14 @@ function App() {
                     <span>{paper.year}</span>
                   </div>
                   <div className="paper-illustration">
-                    <img src={paper.illustration} alt={paper.illustrationAlt} width="1536" height="1024" />
+                    <img
+                      src={paper.illustration}
+                      alt={paper.illustrationAlt}
+                      width="1536"
+                      height="1024"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </div>
                   <p className="paper-status">{paper.status}</p>
                   <h3>{paper.title}</h3>
@@ -501,7 +559,7 @@ function App() {
                 <h2 id="teaching-title">Ideas become clear<br /><em>when they are used.</em></h2>
               </div>
               <p className="section-summary">
-                I teach economics through open ended cases: current research, made tractable without losing its edge.
+                I teach economics through open inquiry cases: current research, made tractable without losing its edge.
               </p>
             </div>
 
@@ -510,7 +568,7 @@ function App() {
                 <p className="paper-status">Teaching practice</p>
                 <h3>Case studies for the age of AI</h3>
                 <p>
-                  My intermediate microeconomics materials turn novel research into calculus based cases and open ended take home exams. The format rewards reasoning over recall and makes rich feedback practical.
+                  My intermediate microeconomics materials turn novel research into cases grounded in calculus and exploratory exams completed at home. The format rewards reasoning over recall and makes rich feedback practical.
                 </p>
                 <div className="teaching-links">
                   <a href="https://github.com/vhaguiar/IntermediateMicro_Case_Studies" target="_blank" rel="noreferrer">
@@ -549,12 +607,80 @@ function App() {
           </div>
         </section>
 
+        <section id="industry" className="section industry-section" aria-labelledby="industry-title">
+          <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
+          <div className="page-shell">
+            <div className="section-intro">
+              <p className="section-number">04</p>
+              <div>
+                <p className="eyebrow"><span /> Industry &amp; consulting</p>
+                <h2 id="industry-title">Economic structure,<br /><em>applied at scale.</em></h2>
+              </div>
+              <p className="section-summary">
+                Industry work and consulting across technology, multilateral institutions, government, and public interest programs.
+              </p>
+            </div>
+
+            <div className="industry-layout">
+              <article className="industry-card industry-amazon">
+                <div className="industry-card-head">
+                  <p className="industry-kicker">Former Senior Economist, Amazon</p>
+                  <time>May 2025 to May 2026</time>
+                </div>
+                <p className="industry-org">Amazon Stores Economics &amp; Science</p>
+                <h3>Senior Economist</h3>
+                <p className="industry-lead">
+                  Decision theory, structural econometrics, and AI brought together for customer and product decisions at scale.
+                </p>
+                <ul>
+                  <li>Algorithms that model consideration and scalable substitution systems.</li>
+                  <li>Customer modelling for markets with millions of products and continuous experimentation.</li>
+                  <li>Work spanning Stores Economics &amp; Science, Core AI, and Central Economics.</li>
+                </ul>
+              </article>
+
+              <article className="industry-card industry-world-bank">
+                <div className="industry-card-head">
+                  <p className="industry-kicker">World Bank consulting</p>
+                  <time>2012 · 2014 to 2016</time>
+                </div>
+                <p className="industry-org">Economic analysis &amp; development strategy</p>
+                <h3>World Bank</h3>
+                <p className="industry-lead">
+                  Technical economic work supporting development strategy, country analysis, and social inclusion in Ecuador.
+                </p>
+                <ul>
+                  <li>Ecuador Skills Development Strategy for Social Inclusion.</li>
+                  <li>Ecuador Country Economic Memorandum and supporting technical notes.</li>
+                  <li>Labor forces, markets, local and international migration, and economic analysis.</li>
+                </ul>
+              </article>
+
+              <aside className="industry-practice">
+                <div>
+                  <p className="industry-kicker">Earlier public &amp; multilateral work</p>
+                  <h3>Ecuador and European Union partnerships</h3>
+                  <p>
+                    Advisory, research, and evaluation work with government, multilateral, and nonprofit institutions from 2009 to 2012.
+                  </p>
+                </div>
+                <div className="practice-tags" aria-label="Selected consulting capabilities">
+                  <span>Labor &amp; income mobility</span>
+                  <span>Trade &amp; early warning systems</span>
+                  <span>Tax policy &amp; decentralization</span>
+                  <span>Program monitoring &amp; evaluation</span>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
         <section id="about" className="section about-section" aria-labelledby="about-title">
           <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
           <div className="page-shell">
             <div className="about-grid">
               <div className="about-heading">
-                <p className="section-number">04</p>
+                <p className="section-number">05</p>
                 <p className="eyebrow"><span /> About</p>
                 <h2 id="about-title">Solutions, theory,<br />data, <em>and the connecting tissue in between.</em></h2>
                 <figure className="about-portrait">
@@ -583,7 +709,7 @@ function App() {
                   My research sits at the intersection of microeconomic theory, econometrics, computational economics, and structural microeconometrics. I am especially interested in models that make bounded, stochastic, and evolving choice measurable.
                 </p>
                 <p>
-                  From May 2025 to May 2026, I was a Senior Economist with Amazon Stores Economics and Science, working across decision theory, structural econometrics, and AI on consideration aware algorithms, scalable substitution models, and continuous experimentation. I hold a PhD in Economics from Brown University and served as an Associate Editor at the Journal of Economic Behavior & Organization through March 2026.
+                  From May 2025 to May 2026, I was a Senior Economist with Amazon Stores Economics and Science, working across decision theory, structural econometrics, and AI on algorithms that model consideration, scalable substitution systems, and continuous experimentation. I hold a PhD in Economics from Brown University and served as an Associate Editor at the Journal of Economic Behavior & Organization through March 2026.
                 </p>
                 <p>
                   My consulting path spans the World Bank and public sector work in policy, taxation, labor markets, program evaluation, trade, and early warning systems. I bring a boutique problem solving approach to this work. I also care deeply about public science diffusion, especially making generative AI legible, useful, and open to a wider public.
@@ -613,9 +739,9 @@ function App() {
             </div>
 
             <div className="timeline" aria-label="Career timeline">
-              <article><time>2026</time><span /><p><strong>Simon Fraser University</strong>Associate Professor of Economics</p></article>
+              <article><time>2024 to present</time><span /><p><strong>Simon Fraser University</strong>Associate Professor of Economics</p></article>
               <article><time>2025 to 2026</time><span /><p><strong>Amazon SEAS</strong>Senior Economist</p></article>
-              <article><time>2024</time><span /><p><strong>Simon Fraser University</strong>Joined the Department of Economics</p></article>
+              <article><time>2012 to 2016</time><span /><p><strong>World Bank</strong>Economic consulting in Ecuador</p></article>
               <article><time>2017</time><span /><p><strong>Brown University</strong>PhD in Economics</p></article>
             </div>
 
@@ -688,7 +814,7 @@ function App() {
           <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
           <div className="contact-orbit" aria-hidden="true" />
           <div className="page-shell contact-grid">
-            <p className="section-number">05</p>
+            <p className="section-number">06</p>
             <div>
               <p className="eyebrow"><span /> Contact</p>
               <h2 id="contact-title">Let’s exchange<br /><em>ideas.</em></h2>
@@ -716,7 +842,7 @@ function App() {
 
       <footer>
         <div className="page-shell footer-grid">
-          <a className="wordmark footer-mark" href="#home" aria-label="Back to top">
+          <a className="wordmark footer-mark" href="#home" aria-label="VA, back to top">
             <span className="monogram" aria-hidden="true"><span>VA</span></span>
           </a>
           <p>Victor H. Aguiar<br />Economist · Greater Vancouver Area, BC, Canada</p>

@@ -8,6 +8,7 @@
   --water: #356d8b;
   --cobalt: #1f5678;
   --clay: #c5643f;
+  --clay-text: #9f462c;
   --gold: #c7983e;
   --white: #fffbf3;
   --line: rgba(42, 29, 24, 0.17);
@@ -27,7 +28,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 6.5rem;
+  scroll-padding-top: 5.25rem;
 }
 
 body {
@@ -75,6 +76,11 @@ a:focus-visible,
 input:focus-visible {
   outline: 2px solid var(--clay);
   outline-offset: 4px;
+}
+
+.contact-section button:focus-visible,
+.contact-section a:focus-visible {
+  outline-color: var(--white);
 }
 
 .sr-only {
@@ -538,7 +544,7 @@ nav {
 .status-grid span {
   display: block;
   margin-bottom: 0.35rem;
-  color: var(--clay);
+  color: var(--clay-text);
   font-size: 0.6rem;
   font-weight: 750;
   letter-spacing: 0.12em;
@@ -610,7 +616,7 @@ nav {
 .section-number {
   align-self: start;
   margin: 0;
-  color: var(--clay);
+  color: var(--clay-text);
   font-family: var(--serif);
   font-size: 0.8rem;
   letter-spacing: 0.12em;
@@ -695,7 +701,7 @@ nav {
 
 .paper-status {
   margin-bottom: 1rem;
-  color: var(--clay);
+  color: var(--clay-text);
   font-size: 0.66rem;
   font-weight: 740;
   letter-spacing: 0.14em;
@@ -720,6 +726,10 @@ nav {
 
 .featured-paper:hover > p:not(.paper-status) {
   color: rgba(255, 251, 243, 0.76);
+}
+
+.featured-paper:hover .paper-status {
+  color: var(--white);
 }
 
 .paper-action {
@@ -845,7 +855,7 @@ a.paper-row:hover {
 }
 
 .paper-type {
-  color: var(--clay);
+  color: var(--clay-text);
 }
 
 .paper-main strong,
@@ -871,7 +881,7 @@ a.paper-row:hover {
   padding: 0.33rem 0.45rem;
   border: 1px solid var(--clay);
   border-radius: 100px;
-  color: var(--clay);
+  color: var(--clay-text);
   white-space: nowrap;
 }
 
@@ -1042,6 +1052,187 @@ a.paper-row:hover .paper-arrow {
   margin: 0;
   padding: 0.8rem 0;
   border-top: 1px solid rgba(255, 251, 243, 0.12);
+}
+
+.industry-section {
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(199, 152, 62, 0.11), transparent 28%),
+    var(--paper-deep);
+}
+
+.industry-section::before {
+  content: "";
+  position: absolute;
+  top: 8rem;
+  right: -11rem;
+  width: 30rem;
+  aspect-ratio: 1;
+  border: 1px solid rgba(91, 52, 39, 0.13);
+  transform: rotate(45deg);
+  box-shadow:
+    0 0 0 2.2rem var(--paper-deep),
+    0 0 0 calc(2.2rem + 1px) rgba(197, 100, 63, 0.16);
+  pointer-events: none;
+}
+
+.industry-section .page-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.industry-section h2 em {
+  color: var(--clay-text);
+}
+
+.industry-layout {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid var(--ink);
+  border-left: 1px solid var(--line);
+}
+
+.industry-card {
+  min-height: 36rem;
+  padding: clamp(2rem, 4vw, 4rem);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 251, 243, 0.44);
+}
+
+.industry-card-head {
+  min-height: 3.6rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: clamp(3rem, 6vw, 6rem);
+}
+
+.industry-kicker,
+.industry-card time {
+  margin: 0;
+  color: var(--cacao);
+  font-size: 0.63rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.industry-card time {
+  color: var(--ink-soft);
+  font-family: var(--serif);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-align: right;
+  text-transform: none;
+}
+
+.industry-org {
+  margin-bottom: 0.8rem;
+  color: var(--clay-text);
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.industry-card h3,
+.industry-practice h3 {
+  margin: 0 0 1.5rem;
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 4.5vw, 4.8rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+
+.industry-lead {
+  max-width: 34rem;
+  margin-bottom: 2rem;
+  color: var(--ink-soft);
+  font-family: var(--serif);
+  font-size: clamp(1.12rem, 1.8vw, 1.45rem);
+  line-height: 1.5;
+}
+
+.industry-card ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.industry-card li {
+  position: relative;
+  padding: 1rem 0 1rem 1.4rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.industry-card li::before {
+  content: "";
+  position: absolute;
+  top: 1.45rem;
+  left: 0;
+  width: 0.42rem;
+  aspect-ratio: 1;
+  border: 1px solid var(--clay);
+  transform: rotate(45deg);
+}
+
+.industry-practice {
+  grid-column: 1 / -1;
+  padding: clamp(2rem, 4vw, 4rem);
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: clamp(3rem, 8vw, 9rem);
+  align-items: end;
+  border-right: 1px solid var(--cacao);
+  border-bottom: 1px solid var(--cacao);
+  background: var(--cacao);
+  color: var(--white);
+}
+
+.industry-practice .industry-kicker {
+  margin-bottom: 2.8rem;
+  color: var(--white);
+}
+
+.industry-practice h3 {
+  max-width: 39rem;
+  font-size: clamp(2.1rem, 3.6vw, 3.7rem);
+}
+
+.industry-practice > div > p:last-child {
+  max-width: 37rem;
+  margin: 0;
+  color: rgba(255, 251, 243, 0.7);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.practice-tags {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid rgba(255, 251, 243, 0.42);
+  border-left: 1px solid rgba(255, 251, 243, 0.17);
+}
+
+.practice-tags span {
+  min-height: 5.2rem;
+  padding: 1.1rem;
+  display: flex;
+  align-items: flex-end;
+  border-right: 1px solid rgba(255, 251, 243, 0.17);
+  border-bottom: 1px solid rgba(255, 251, 243, 0.17);
+  color: rgba(255, 251, 243, 0.8);
+  font-family: var(--serif);
+  font-size: 0.92rem;
+  line-height: 1.35;
 }
 
 .about-section {
@@ -1232,7 +1423,7 @@ a.paper-row:hover .paper-arrow {
 .timeline time {
   display: block;
   margin-bottom: 1.55rem;
-  color: var(--clay);
+  color: var(--clay-text);
   font-family: var(--serif);
   font-size: 0.78rem;
 }
@@ -1405,7 +1596,7 @@ a.paper-row:hover .paper-arrow {
 }
 
 .coauthor-cloud a {
-  color: var(--clay);
+  color: var(--clay-text);
 }
 
 .contact-section {
@@ -1460,7 +1651,7 @@ a.paper-row:hover .paper-arrow {
 .contact-copy {
   max-width: 28rem;
   margin: 2rem 0 0;
-  color: rgba(255, 251, 243, 0.78);
+  color: var(--white);
   font-family: var(--serif);
   font-size: 1.25rem;
   line-height: 1.5;
@@ -1494,7 +1685,7 @@ a.paper-row:hover .paper-arrow {
   border-bottom: 1px solid currentColor;
   background: transparent;
   cursor: pointer;
-  color: rgba(255, 251, 243, 0.74);
+  color: var(--white);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -1584,12 +1775,24 @@ footer {
     padding-left: 2rem;
   }
 
+  .industry-card {
+    padding: 2.2rem;
+  }
+
   .recognition-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 800px) {
+  html {
+    scroll-padding-top: 4.6rem;
+  }
+
+  body.menu-open {
+    overflow: hidden;
+  }
+
   .site-header {
     backdrop-filter: none;
   }
@@ -1643,11 +1846,16 @@ footer {
     gap: 0;
     background: var(--paper);
     transform: translateX(100%);
+    visibility: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     transition: transform 280ms cubic-bezier(0.65, 0, 0.35, 1);
   }
 
   nav.nav-open {
     transform: translateX(0);
+    visibility: visible;
   }
 
   .nav-link {
@@ -1732,6 +1940,8 @@ footer {
   .section-intro,
   .about-grid,
   .teaching-layout,
+  .industry-layout,
+  .industry-practice,
   .contact-grid,
   .recognition-head,
   .coauthors-block {
@@ -1824,6 +2034,22 @@ footer {
 
   .course-column {
     margin-top: 2rem;
+  }
+
+  .industry-card {
+    min-height: auto;
+  }
+
+  .industry-card + .industry-card {
+    border-top: 1px solid var(--line);
+  }
+
+  .industry-card-head {
+    margin-bottom: 3rem;
+  }
+
+  .industry-practice {
+    gap: 3rem;
   }
 
   .about-heading {
@@ -1931,6 +2157,19 @@ footer {
   }
 
   .contact-links {
+    grid-template-columns: 1fr;
+  }
+
+  .industry-card-head {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .industry-card time {
+    text-align: left;
+  }
+
+  .practice-tags {
     grid-template-columns: 1fr;
   }
 
