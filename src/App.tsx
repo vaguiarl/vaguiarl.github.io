@@ -28,6 +28,16 @@ const featuredResearch = [
   {
     number: "02",
     year: "2026",
+    status: "Working paper · July 2026",
+    title: "Entangled vs. Separable Choice",
+    copy: "Finite, nonparametric tests distinguish genuinely separate local choice from coordinated joint patterns that can hide behind identical marginals. CHSH characterizes the binary case; virtual replicas handle general finite domains.",
+    illustration: "./illustrations/paper_entangled_v1.webp",
+    illustrationAlt: "Two mirrored local choice rooms share a latent source while four balanced joint-outcome tiles reveal one crossed CHSH pattern that separates hidden coordination from ordinary correlation",
+    href: "https://www.researchgate.net/publication/378938384_Entangled_vs_Separable_Choice",
+  },
+  {
+    number: "03",
+    year: "2026",
     status: "Working paper",
     title: "GARP-EFM: Improving Foundation Models with Revealed Preference Structure",
     copy: "GARP filters synthetic three-good demand histories before they adapt a forecasting model, turning revealed preference into a predictive prior.",
@@ -36,7 +46,7 @@ const featuredResearch = [
     href: "https://arxiv.org/abs/2603.23993",
   },
   {
-    number: "03",
+    number: "04",
     year: "2025",
     status: "Revise & resubmit",
     title: "A Rationalization of the Weak Axiom of Revealed Preference",
@@ -60,6 +70,15 @@ const research: ResearchItem[] = [
   {
     year: "2026",
     kind: "working",
+    title: "Entangled vs. Separable Choice",
+    authors: "Nail Kashaev, Martin Plávala & Victor H. Aguiar",
+    venue: "Working paper · July 2026 version",
+    href: "https://www.researchgate.net/publication/378938384_Entangled_vs_Separable_Choice",
+    note: "Updated",
+  },
+  {
+    year: "2026",
+    kind: "working",
     title: "GARP-EFM: Improving Foundation Models with Revealed Preference Structure",
     authors: "Victor H. Aguiar & Nail Kashaev",
     venue: "Working paper",
@@ -73,14 +92,6 @@ const research: ResearchItem[] = [
     authors: "Victor H. Aguiar, Per Hjertstrand, Roberto Serrano & Özgür Evren",
     venue: "Second round revision, The Economic Journal",
     href: "https://www.researchgate.net/publication/333547091_A_Rationalization_of_the_Weak_Axiom_of_Revealed_Preference",
-  },
-  {
-    year: "2024",
-    kind: "working",
-    title: "Entangled vs. Separable Choice",
-    authors: "Victor H. Aguiar, Nail Kashaev & Martin Plávala",
-    venue: "Working paper",
-    href: "https://arxiv.org/abs/2403.09045",
   },
   {
     year: "2023",
