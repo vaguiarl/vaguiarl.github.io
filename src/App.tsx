@@ -371,10 +371,10 @@ function App() {
             </blockquote>
           </div>
 
-          <div className="hero-status" aria-label="Current roles, recognition, and languages">
+          <div className="hero-status" aria-label="Current role, service, recognition, and languages">
             <div className="page-shell status-grid">
               <p><span>Now</span> Associate Professor, SFU</p>
-              <p><span>Editorial</span> Associate Editor, JEBO</p>
+              <p><span>Editorial service</span> JEBO Associate Editor · through Mar 2026</p>
               <p><span>Recognition</span> Borts · Grimes · REStud</p>
               <p><span>Languages</span> English · French · Spanish</p>
             </div>
@@ -583,7 +583,7 @@ function App() {
                   My research sits at the intersection of microeconomic theory, econometrics, computational economics, and structural microeconometrics. I am especially interested in models that make bounded, stochastic, and evolving choice measurable.
                 </p>
                 <p>
-                  From May 2025 to May 2026, I was a Senior Economist with Amazon Stores Economics and Science, working across decision theory, structural econometrics, and AI on consideration aware algorithms, scalable substitution models, and continuous experimentation. I hold a PhD in Economics from Brown University and serve as an Associate Editor at the Journal of Economic Behavior & Organization.
+                  From May 2025 to May 2026, I was a Senior Economist with Amazon Stores Economics and Science, working across decision theory, structural econometrics, and AI on consideration aware algorithms, scalable substitution models, and continuous experimentation. I hold a PhD in Economics from Brown University and served as an Associate Editor at the Journal of Economic Behavior & Organization through March 2026.
                 </p>
                 <p>
                   My consulting path spans the World Bank and public sector work in policy, taxation, labor markets, program evaluation, trade, and early warning systems. I bring a boutique problem solving approach to this work. I also care deeply about public science diffusion, especially making generative AI legible, useful, and open to a wider public.
