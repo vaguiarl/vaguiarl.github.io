@@ -53,7 +53,7 @@ const featuredResearch = [
     copy: "An Afriat theorem for WGARP: coherent utility coalitions forbid binary reversals while allowing longer cycles and admissible counterfactual demand.",
     illustration: "./illustrations/paper_weak_axiom_v2.webp",
     illustrationAlt: "Overlapping utility coalitions allowing a three-choice cycle without binary reversals beside an admissible bundle on a new budget",
-    href: "https://www.researchgate.net/publication/333547091_A_Rationalization_of_the_Weak_Axiom_of_Revealed_Preference",
+    href: "https://arxiv.org/abs/1906.00296",
   },
 ];
 
@@ -91,7 +91,7 @@ const research: ResearchItem[] = [
     title: "A Rationalization of the Weak Axiom of Revealed Preference",
     authors: "Victor H. Aguiar, Per Hjertstrand, Roberto Serrano & Özgür Evren",
     venue: "Second round revision, The Economic Journal",
-    href: "https://www.researchgate.net/publication/333547091_A_Rationalization_of_the_Weak_Axiom_of_Revealed_Preference",
+    href: "https://arxiv.org/abs/1906.00296",
   },
   {
     year: "2023",
