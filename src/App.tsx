@@ -14,6 +14,64 @@ type ResearchItem = {
 
 const cvUrl = "./AguiarCV_2026.pdf";
 
+const blogArticles = [
+  {
+    number: "01",
+    date: "Aug 21, 2026",
+    dateTime: "2026-08-21",
+    topic: "AI · agency · revealed preference",
+    title: "Can an AI Reveal an Inner Life?",
+    copy: "How social incentives could produce functional inner organization in AI agents, and why revealed agency should be a consistency test rather than a one shot performance.",
+    href: "https://www.linkedin.com/pulse/can-ai-reveal-inner-life-victor-aguiar-ph-d--0fn2c/",
+    latest: true,
+  },
+  {
+    number: "02",
+    date: "Aug 12, 2026",
+    dateTime: "2026-08-12",
+    topic: "Agentic markets · security",
+    title: "Can Agents Collude Undetectably?",
+    copy: "Why marginal audits can miss coordinated AI agents, and how Bell inequalities can test social independence before agents bid, buy, and sell at scale.",
+    href: "https://www.linkedin.com/pulse/can-agents-collude-undetectably-victor-aguiar-ph-d--tykrc",
+  },
+  {
+    number: "03",
+    date: "Aug 7, 2026",
+    dateTime: "2026-08-07",
+    topic: "AI · bounded rationality",
+    title: "Can Generative AI Give Economics a Unified Model of Bounded Rationality?",
+    copy: "How one learned representation and one random utility structure can connect choice across risk, time, valuation, and social domains.",
+    href: "https://www.linkedin.com/pulse/can-generative-ai-give-economics-unified-model-victor-aguiar-ph-d--vejqc",
+  },
+  {
+    number: "04",
+    date: "Jul 31, 2026",
+    dateTime: "2026-07-31",
+    topic: "Ecuador · labor · foundation models",
+    title: "An Addendum on Tabular Foundation Models: Reading Ecuador’s Hidden Labor Market",
+    copy: "A bilingual reading of Ecuador’s labor market that looks beyond headline unemployment through economic structure and foundation models.",
+    href: "https://www.linkedin.com/pulse/addendum-tabular-foundation-models-reading-ecuadors-aguiar-ph-d--sza2c",
+  },
+  {
+    number: "05",
+    date: "Jun 11, 2026",
+    dateTime: "2026-06-11",
+    topic: "GenAI for Social Science · Part II",
+    title: "Tabular Data, Pretrained Foundation Time Series Models, and the Future of Forecasting",
+    copy: "What pretrained tabular and time series models change about forecasting, and where economic structure can improve their training signal.",
+    href: "https://www.linkedin.com/pulse/genai-social-science-part-ii-tabular-data-pretrained-aguiar-ph-d--c8uve",
+  },
+  {
+    number: "06",
+    date: "Jun 10, 2026",
+    dateTime: "2026-06-10",
+    topic: "GenAI for Social Science · Part I",
+    title: "Unstructured Data, Verbalization, and Counterfactual Prediction",
+    copy: "A nontechnical case for verbalizing rich histories and using LLM world models as counterfactual tools, with experiments as the credibility standard.",
+    href: "https://www.linkedin.com/pulse/genai-social-science-part-i-unstructured-data-victor-aguiar-ph-d--40wne",
+  },
+];
+
 const featuredResearch = [
   {
     number: "01",
@@ -408,6 +466,7 @@ function App() {
 
           <nav id="primary-navigation" className={menuOpen ? "nav-open" : ""} aria-label="Primary navigation">
             <a className="nav-link" href="#research" onClick={closeMenu}>Research</a>
+            <a className="nav-link" href="#blogging" onClick={closeMenu}>Blogging</a>
             <a className="nav-link" href="#teaching" onClick={closeMenu}>Teaching</a>
             <a className="nav-link" href="#industry" onClick={closeMenu}>Industry / Consulting</a>
             <a className="nav-link" href="#about" onClick={closeMenu}>About</a>
@@ -576,11 +635,56 @@ function App() {
           </div>
         </section>
 
+        <section id="blogging" className="section blogging-section" aria-labelledby="blogging-title">
+          <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
+          <div className="blog-sun" aria-hidden="true" />
+          <div className="page-shell">
+            <div className="section-intro">
+              <p className="section-number">03</p>
+              <div>
+                <p className="eyebrow"><span /> Blogging · public science</p>
+                <h2 id="blogging-title">Ideas should<br /><em>travel.</em></h2>
+              </div>
+              <p className="section-summary">
+                I write for a wider public about economics, AI, data, and the new forms of agency they are creating.
+              </p>
+            </div>
+
+            <div className="blog-grid">
+              {blogArticles.map((article) => (
+                <a className="blog-card" href={article.href} target="_blank" rel="noreferrer" key={article.title}>
+                  <div className="blog-card-head">
+                    <span className="blog-number">{article.number}</span>
+                    <time dateTime={article.dateTime}>{article.date}</time>
+                  </div>
+                  <div className="blog-card-topic">
+                    <span aria-hidden="true" />
+                    {article.topic}
+                    {article.latest && <strong>Latest</strong>}
+                  </div>
+                  <h3>{article.title}</h3>
+                  <p>{article.copy}</p>
+                  <span className="blog-action">Read on LinkedIn <ExternalArrow /></span>
+                </a>
+              ))}
+            </div>
+
+            <a
+              className="blog-profile-link text-link"
+              href="https://www.linkedin.com/in/victor-aguiar-ph-d-698b792a/recent-activity/articles/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              View all LinkedIn articles <ExternalArrow />
+            </a>
+          </div>
+        </section>
+
         <section id="teaching" className="section teaching-section" aria-labelledby="teaching-title">
           <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
           <div className="page-shell">
             <div className="section-intro light-intro">
-              <p className="section-number">03</p>
+              <p className="section-number">04</p>
               <div>
                 <p className="eyebrow"><span /> Teaching</p>
                 <h2 id="teaching-title">Ideas become clear<br /><em>when they are used.</em></h2>
@@ -638,7 +742,7 @@ function App() {
           <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
           <div className="page-shell">
             <div className="section-intro">
-              <p className="section-number">04</p>
+              <p className="section-number">05</p>
               <div>
                 <p className="eyebrow"><span /> Industry &amp; consulting</p>
                 <h2 id="industry-title">Economic structure,<br /><em>applied at scale.</em></h2>
@@ -707,7 +811,7 @@ function App() {
           <div className="page-shell">
             <div className="about-grid">
               <div className="about-heading">
-                <p className="section-number">05</p>
+                <p className="section-number">06</p>
                 <p className="eyebrow"><span /> About</p>
                 <h2 id="about-title">Solutions, theory,<br />data, <em>and the connecting tissue in between.</em></h2>
                 <figure className="about-portrait">
@@ -841,7 +945,7 @@ function App() {
           <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
           <div className="contact-orbit" aria-hidden="true" />
           <div className="page-shell contact-grid">
-            <p className="section-number">06</p>
+            <p className="section-number">07</p>
             <div>
               <p className="eyebrow"><span /> Contact</p>
               <h2 id="contact-title">Let’s exchange<br /><em>ideas.</em></h2>
