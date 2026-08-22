@@ -272,13 +272,14 @@ export default function ConsciousLifeLab() {
     if (!ready) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const observer = new ResizeObserver(() => {
+    const redraw = () => {
       resizeCanvas(canvas);
       const world = worldRef.current;
       if (world) drawWorld(canvas, world, viewModeRef.current);
-    });
-    observer.observe(canvas);
-    return () => observer.disconnect();
+    };
+    redraw();
+    window.addEventListener("resize", redraw);
+    return () => window.removeEventListener("resize", redraw);
   }, [ready]);
 
   useEffect(() => {
