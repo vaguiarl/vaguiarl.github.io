@@ -1,0 +1,17 @@
+{
+  "name": "conscious-life",
+  "type": "module",
+  "description": "A prey-only Conway laboratory for cooperation and graded proto-consciousness",
+  "version": "0.1.0",
+  "license": "MIT",
+  "files": [
+    "conscious_life_bg.wasm",
+    "conscious_life.js",
+    "conscious_life.d.ts"
+  ],
+  "main": "conscious_life.js",
+  "types": "conscious_life.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

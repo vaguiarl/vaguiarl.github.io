@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import ConsciousLifeLab from "./components/ConsciousLifeLab";
 
 type ResearchKind = "working" | "publication" | "short" | "chapter";
 
@@ -466,6 +467,7 @@ function App() {
 
           <nav id="primary-navigation" className={menuOpen ? "nav-open" : ""} aria-label="Primary navigation">
             <a className="nav-link" href="#research" onClick={closeMenu}>Research</a>
+            <a className="nav-link" href="#conscious-life" onClick={closeMenu}>Lab</a>
             <a className="nav-link" href="#blogging" onClick={closeMenu}>Blogging</a>
             <a className="nav-link" href="#teaching" onClick={closeMenu}>Teaching</a>
             <a className="nav-link" href="#industry" onClick={closeMenu}>Industry / Consulting</a>
@@ -635,12 +637,14 @@ function App() {
           </div>
         </section>
 
+        <ConsciousLifeLab />
+
         <section id="blogging" className="section blogging-section" aria-labelledby="blogging-title">
           <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
           <div className="blog-sun" aria-hidden="true" />
           <div className="page-shell">
             <div className="section-intro">
-              <p className="section-number">03</p>
+              <p className="section-number">04</p>
               <div>
                 <p className="eyebrow"><span /> Blogging · public science</p>
                 <h2 id="blogging-title">Ideas should<br /><em>travel.</em></h2>
@@ -684,7 +688,7 @@ function App() {
           <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
           <div className="page-shell">
             <div className="section-intro light-intro">
-              <p className="section-number">04</p>
+              <p className="section-number">05</p>
               <div>
                 <p className="eyebrow"><span /> Teaching</p>
                 <h2 id="teaching-title">Ideas become clear<br /><em>when they are used.</em></h2>
@@ -742,7 +746,7 @@ function App() {
           <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
           <div className="page-shell">
             <div className="section-intro">
-              <p className="section-number">05</p>
+              <p className="section-number">06</p>
               <div>
                 <p className="eyebrow"><span /> Industry &amp; consulting</p>
                 <h2 id="industry-title">Economic structure,<br /><em>applied at scale.</em></h2>
@@ -811,7 +815,7 @@ function App() {
           <div className="page-shell">
             <div className="about-grid">
               <div className="about-heading">
-                <p className="section-number">06</p>
+                <p className="section-number">07</p>
                 <p className="eyebrow"><span /> About</p>
                 <h2 id="about-title">Solutions, theory,<br />data, <em>and the connecting tissue in between.</em></h2>
                 <figure className="about-portrait">
@@ -945,7 +949,7 @@ function App() {
           <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
           <div className="contact-orbit" aria-hidden="true" />
           <div className="page-shell contact-grid">
-            <p className="section-number">07</p>
+            <p className="section-number">08</p>
             <div>
               <p className="eyebrow"><span /> Contact</p>
               <h2 id="contact-title">Let’s exchange<br /><em>ideas.</em></h2>
