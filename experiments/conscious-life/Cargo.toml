@@ -1,8 +1,8 @@
 [package]
 name = "conscious-life"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
-description = "A prey-only Conway laboratory for cooperation and graded proto-consciousness"
+description = "A spatial predator-prey laboratory for cooperation and graded inner mappings"
 license = "MIT"
 
 [lib]

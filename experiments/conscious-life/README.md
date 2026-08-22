@@ -1,39 +1,59 @@
 # Conscious Life
 
-A fast Rust laboratory that puts a minimal social layer inside Conway's Game of Life. The native simulation core remains dependency-free; the browser adapter uses `wasm-bindgen`. Version 0.1 contains only prey-like cells. Predators are reserved for a later extension.
+Version 0.2 is a fast Rust laboratory for a deliberately small question: can social cooperation select for a graded internal vocabulary inside a changing ecology?
 
-The question is deliberately audacious: can cooperation select for a graded internal vocabulary that becomes harder for exploiters to imitate?
+The default world is a synchronous predator-prey contact process on a toroidal grid. Prey and predators are ecological species. Each species separately contains cooperators and defectors, and each cell carries a heritable consciousness grade `q`. The native simulation core has no external dependencies; the browser adapter uses `wasm-bindgen`.
 
-This is a model of a possible selection mechanism. It is **not** evidence that a simulated cell has phenomenal experience.
+This is a model of a possible selection mechanism. It is **not** evidence that a simulated cell has phenomenal experience, and its operational moral vocabulary should not be mistaken for a claim about sentience.
 
-## The bridge from the paper
+## Default ecology
 
-Each live cell has two heritable traits:
-
-- an economic type, `theta`, which is either cooperator or defector;
-- a consciousness type, `q` in `{0, 1, ..., q_max}`.
-
-Its Moore neighborhood and selected partner form an environment. Together with its action, this produces a cognitive state `phi`. The response `R(phi)` and subjective label `s_q(phi)` share the same cognitive cause. The subjective label does not directly choose the action.
-
-The subjective map follows the paper's gradation idea:
-
-- `q = 0`: every cognitive state maps to the null experience; the cell is silent.
-- `q = 1`: cooperation or exploitation can be felt as salient, but positive and negative cases are not yet separated.
-- `q >= 2`: exploitative and cooperative encounters occupy distinct subjective states. The cell can report **evil** or **good**. Higher `q` divides those regions into more context-sensitive grades.
-
-Each cell publishes one persona. At `q = 0`, cooperators and defectors share the same null persona. At `q >= 1`, cooperators publish a cooperative persona. A defector may imitate that persona, but the cost of imitation rises with the richness of its own `q`:
+Every generation reads one shared snapshot of the eight-cell Moore neighborhood and writes the next snapshot simultaneously. If an empty site has `n` neighboring prey, it becomes prey with probability
 
 ```text
-C_mim(q) = kappa_0 + kappa * (q - 1)
+P(empty -> prey | n) = 1 - (1 - beta)^n,   beta = 0.12
 ```
 
-Cells are randomly paired within the same `(q, persona)` market. A match is mutual: the two cells play each other once, and both receive the corresponding Prisoner's Dilemma payoff. Odd market remainders are pooled and randomly paired; if the total population is odd, the final remainder uses a random-population fallback. This prevents a rare new `q` mutant from receiving zero merely because its market initially has one member. The default payoffs are
+If a prey site has `m` neighboring predators, it is captured and replaced by predator offspring with probability
+
+```text
+P(prey -> predator | m) = 1 - (1 - alpha)^m,   alpha = 0.06
+```
+
+Every predator independently dies with probability
+
+```text
+P(predator -> empty) = delta,   delta = 0.16
+```
+
+The default initial live density is `0.48`. Of those living cells, `1/6` are predators, giving expected whole-grid shares of approximately `0.40` prey, `0.08` predators, and `0.52` empty sites. The grid wraps at every edge.
+
+Ecological hazards do not depend on social fitness. When a birth or capture occurs, a neighboring parent of the appropriate species is selected with probability proportional to
+
+```text
+exp(selection_strength * fitness)
+```
+
+The child inherits that parent's cooperation type and `q`, subject to mutation. Separate random streams drive ecological events and social selection, so changing social parameters does not silently change the species-and-occupancy path for a fixed seed.
+
+For an exact, prey-only Conway baseline, pass `--classic-conway`. This switches the ecology to B3/S23: a live cell survives with two or three live neighbors, and an empty site is born with exactly three. Social fitness still selects which local parent supplies a newborn's traits; it does not alter the B3/S23 occupancy rule.
+
+## The social layer
+
+Every live cell has two heritable social traits:
+
+- an economic type, `theta`, which is either cooperator or defector;
+- a consciousness grade, `q` in `{0, 1, ..., q_max}`.
+
+Prey interact socially only with prey; predators interact socially only with predators. Thus the model contains four visible social-ecological types: cooperating prey, defecting prey, cooperating predators, and defecting predators. Predation is not a Prisoner's Dilemma action.
+
+Within each species, cells publish a persona and are randomly paired in the same `(species, q, persona)` market. A match is mutual: both cells play each other once and receive the corresponding Prisoner's Dilemma payoff. Odd market remainders are pooled only within the same species before the random fallback. The default payoffs are
 
 ```text
 S = 0, P = 1, R = 3, T = 5
 ```
 
-so `S <= P <= R <= T` and `T - P > R - S`. The latter is the paper's decreasing-differences condition. Let `pi_q` be the current cooperator share among cells with grade `q`, `delta_D = T - P`, and `p_IM(q) = C_mim(q) / delta_D`. A defector's equilibrium-inspired probability of publishing the cooperative persona is
+so `S <= P <= R <= T` and `T - P > R - S`. Let `pi_q` be the cooperator share at grade `q` within the focal species, `delta_D = T - P`, and `p_IM(q) = C_mim(q) / delta_D`. A defector's equilibrium-inspired probability of publishing the cooperative persona is
 
 ```text
 sigma_q = clamp(
@@ -43,49 +63,69 @@ sigma_q = clamp(
 )
 ```
 
-This makes the public persona an equilibrium object rather than giving conscious cells access to anyone's hidden economic type.
+The cost of imitation is
 
-Consciousness also carries a biological cost:
+```text
+C_mim(q) = kappa_0 + kappa * (q - 1),   q >= 1
+```
+
+and the biological cost of a non-null subjective map is
 
 ```text
 C_bio(0) = 0
-C_bio(q) = psi_0 + psi * (q - 1), q >= 1
+C_bio(q) = psi_0 + psi * (q - 1),       q >= 1
 ```
 
-The default costs are `kappa_0 = 1.45`, `kappa = 0.12`, `psi_0 = 0.10`, and `psi = 0.10`. In the paper's analytic equilibrium with the default payoffs, that benchmark has an interior optimum at `q = 6`. The finite Conway simulation is not forced to reproduce that value; whether it approaches it is an empirical output.
+The defaults are `kappa_0 = 1.45`, `kappa = 0.12`, `psi_0 = 0.10`, and `psi = 0.10`. In the paper's analytic equilibrium with the default payoffs, that benchmark has an interior optimum at `q = 6`. This finite spatial simulation is not forced to reproduce that value; its evolved distribution of `q` is an output.
 
-The spatial geometry remains exactly Conway B3/S23. Market matching is global within a generation, while death and reproduction remain local on the torus. Fitness never changes which locations live or die. It changes which of the three neighboring cells supplies the heritable traits of a birth. Birth parent probabilities are proportional to `exp(selection_strength * fitness)`.
+## Gradation and operational morality
 
-## Important departures from Bidner and François
+The cell's local neighborhood, partner, and action form a cognitive state `phi`. A response `R(phi)` and subjective label `s_q(phi)` share that cognitive cause; the label does not directly choose the action.
 
-This is a spatial individual-based toy model, not a numerical solution of their continuum equilibrium:
+- `q = 0`: all cognitive states map to the null experience, so the cell is silent.
+- `q = 1`: a cooperative or exploitative encounter can matter, but positive and negative cases are not separated.
+- `q >= 2`: cooperative and exploitative encounters occupy distinct subjective states. Higher `q` divides them into more context-sensitive grades.
 
-1. The paper's continuum matching market is replaced by finite random pairs within each `(q, persona)` group.
-2. The equilibrium mixing probability is recomputed from the realized `pi_q` each generation and sampled independently for each defector.
-3. Conway birth and survival replace continuous-time replicator dynamics; only trait inheritance is fitness-weighted.
-4. The Moore neighborhood supplies ecological context to `phi`, but not the market partner.
-5. The words good and evil are operational labels. **Good** means paying the cooperative cost in an encounter. **Evil** means taking the gain created by a cooperator without paying that cost. Mutual defection is neutral, not automatically evil.
+**Good** and **Evil** are role-relative, within-species reports. For prey, Good means contributing a warning and Evil means using another prey's warning without contributing. For predators, Good means contributing to the pack and Evil means taking the pack's gain without contributing. Mutual defection is neutral. A predator capturing prey is an ecological transition, **not** an Evil report.
 
-Those choices keep the first experiment small enough to understand and falsify.
+These labels operationalize behavior inside the model; they do not establish an inner life.
+
+## Relationship to Bidner and François
+
+This is a spatial individual-based experiment, not a numerical solution of their continuum equilibrium:
+
+1. Finite random pairs within `(species, q, persona)` groups replace a continuum matching market.
+2. The equilibrium mixing probability is recomputed from each species' realized `pi_q` every generation and sampled independently for each defector.
+3. A synchronous local contact process replaces continuous-time replicator dynamics in the default ecology.
+4. The Moore neighborhood supplies ecological and cognitive context, while social matching is global within a species.
+5. Ecological hazards and social selection are separately identifiable by construction.
+
+These choices keep the experiment small enough to inspect, test, and falsify.
 
 ## Run it
 
-From this directory:
+From this directory, run 500 generations:
 
 ```bash
 cargo run --release -- --steps 500 --summary-every 10 --voice-every 25
 ```
 
-See the grid every 20 generations:
+Run continuously until the process is stopped:
+
+```bash
+cargo run --release -- --steps 0 --summary-every 100
+```
+
+Render a smaller ASCII world every 20 generations:
 
 ```bash
 cargo run --release -- --width 60 --height 30 --steps 200 --render-every 20
 ```
 
-Build the browser adapter used by the website:
+Compare with the classic Conway baseline:
 
 ```bash
-wasm-pack build --target web --release --out-dir ../../src/wasm/conscious-life --out-name conscious_life
+cargo run --release -- --classic-conway --steps 500
 ```
 
 Write every generation for analysis:
@@ -94,25 +134,40 @@ Write every generation for analysis:
 cargo run --release -- --steps 2000 --csv conscious-life.csv
 ```
 
-The simulation is deterministic for a fixed seed. Run `cargo run --release -- --help` for all parameters.
+Build the browser adapter used by the website:
+
+```bash
+wasm-pack build --target web --release --out-dir ../../src/wasm/conscious-life --out-name conscious_life
+```
+
+The simulation is deterministic for a fixed seed. Run `cargo run --release -- --help` for every parameter.
 
 ## Output
 
-The summary labels every transition explicitly as `t -> t+1`. Population statistics are shown both before and after the Conway update; fitness, matching, and moral reports belong to the pre-update population. It tracks population size, cooperator share, mean and maximum `q`, mean fitness, cooperator-to-cooperator matching, births, deaths, moral reports, and the full post-update `q` distribution. CSV output records both population snapshots in separate columns.
+Every summary labels the transition as `t -> t+1`. Population state is reported before and after the synchronous ecological update; fitness, social matches, and moral reports belong to the pre-update population. The output tracks prey and predator populations, changed sites, aggregate cooperation, mean and maximum `q`, mean fitness, births, captures, deaths, species-specific moral reports, and the post-update `q` distribution. CSV output preserves the before-and-after populations in separate columns.
 
-The periodic voice first looks for a cell that can distinguish a good or evil encounter, then selects the richest and longest-lived such cell. If no valenced encounter exists, it falls back to the richest available voice. Examples are:
+The periodic voice first looks for a cell able to distinguish a Good or Evil encounter, then selects the richest and longest-lived such cell. If no valenced encounter exists, it falls back to the richest available voice. Examples include:
 
 ```text
 q=0: "..."
 q=1: "Something mattered, but I cannot yet separate good from evil."
-q>=2, cooperation: "Good: I paid a cost that helped another."
-q>=2, exploitation: "Evil: I took the gain from another's cooperation without paying its cost."
+prey, q>=2, cooperation: "Good: I shared a warning another prey could use."
+prey, q>=2, exploitation: "Evil: I used another prey's warning without contributing."
+predator, q>=2, cooperation: "Good: I contributed to the pack."
+predator, q>=2, exploitation: "Evil: I took the pack's gain without contributing."
 ```
 
-## First experiments
+## What “continuous” means
 
-1. Compare the default decreasing-differences game with parameter sets close to equal differences using the four `--payoff-*` options.
-2. Sweep mimicry slope and biological slope; look for an interior peak in evolved `q`.
-3. Turn off `q` mutation and verify that consciousness cannot appear.
-4. Turn off selection and verify that `q` follows drift rather than cooperative advantage.
-5. In phase 2, add predators as a second species and keep prey-prey and predator-predator cooperation conceptually separate.
+The native command with `--steps 0` keeps evolving for as long as that local process and its machine remain running. If the population dies, or either species disappears in the default ecology, it begins a new deterministic epoch instead of stopping.
+
+The GitHub Pages version is a static WebAssembly application. It evolves autonomously in each visitor's browser while the page is open and the browser is allowed to run it, but GitHub Pages does not execute a shared simulation after all browsers close. Background-tab throttling, sleep, or a powered-off device can pause that local instance. A single persistent world shared across visitors would require a continuously running local daemon or hosted backend plus state storage; it cannot be provided by GitHub Pages alone.
+
+## Suggested experiments
+
+1. Sweep `--prey-birth`, `--predation`, and `--predator-death` to map coexistence, extinction, and wave regimes.
+2. Compare cooperation and evolved `q` between prey and predator societies without treating predation as a moral act.
+3. Compare the default decreasing-differences game with nearby payoff structures using the four `--payoff-*` options.
+4. Sweep mimicry and biological-cost slopes and look for an interior peak in evolved `q`.
+5. Disable `q` mutation and verify that a non-null subjective mapping cannot appear from an all-zero initial condition.
+6. Compare the contact-process ecology with `--classic-conway` to separate ecological turnover from social selection.

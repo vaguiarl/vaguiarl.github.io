@@ -1120,6 +1120,18 @@ a.paper-row:hover .paper-arrow {
 }
 
 .legend-defector {
+  border: 1px solid #f0ce88;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.legend-prey {
+  border-radius: 50%;
+  background: #dcb35c;
+}
+
+.legend-predator {
+  border: 1px solid #e99f83;
   background: #c96747;
   transform: rotate(45deg) scale(0.82);
 }
@@ -1317,8 +1329,8 @@ a.paper-row:hover .paper-arrow {
   font-variant-numeric: tabular-nums;
 }
 
-.emergence-good::before,
-.emergence-evil::before {
+.emergence-prey::before,
+.emergence-predator::before {
   content: "";
   width: 0.38rem;
   aspect-ratio: 1;
@@ -1328,7 +1340,7 @@ a.paper-row:hover .paper-arrow {
   background: #dcb35c;
 }
 
-.emergence-evil::before {
+.emergence-predator::before {
   background: #c96747;
 }
 

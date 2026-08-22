@@ -7,5 +7,8 @@ export default defineConfig({
   build: {
     target: "es2022",
     cssMinify: true,
+    rolldownOptions: {
+      input: ["index.html", "conscious-life/index.html"],
+    },
   },
 });

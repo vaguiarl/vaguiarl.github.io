@@ -54,27 +54,39 @@ fn run() -> Result<(), String> {
         None => None,
     };
 
-    println!("CONSCIOUS LIFE 0.1 | prey-only ecological + social laboratory");
+    println!("CONSCIOUS LIFE 0.2 | predator-prey ecological + social laboratory");
     println!(
-        "grid={}x{} seed={} initial_alive={} PD=[S:{:.1}, P:{:.1}, R:{:.1}, T:{:.1}]",
+        "grid={}x{} seed={} initial_alive={} prey={} predators={} ecology={} PD=[S:{:.1}, P:{:.1}, R:{:.1}, T:{:.1}]",
         options.config.width,
         options.config.height,
         options.config.seed,
         simulation.alive_count(),
+        simulation.population().prey,
+        simulation.population().predators,
+        if options.config.predator_prey_ecology {
+            "contact-process"
+        } else {
+            "classic-conway"
+        },
         options.config.game.sucker,
         options.config.game.punishment,
         options.config.game.reward,
         options.config.game.temptation,
     );
-    println!("q=0 silent | q=1 felt | q>=2 can report GOOD/EVIL | O/o cooperators | X/x defectors");
+    println!(
+        "q=0 silent | q=1 felt | q>=2 can report GOOD/EVIL | prey O/o/X/x | predators V/v/W/w"
+    );
     println!();
 
     if options.render_every > 0 {
         println!("tick 0\n{}", simulation.render());
     }
 
-    for _ in 0..options.steps {
+    let mut completed = 0;
+    let mut epoch = 1_u64;
+    while options.steps == 0 || completed < options.steps {
         let report = simulation.step();
+        completed += 1;
         if let Some(writer) = csv.as_mut() {
             writeln!(writer, "{}", report.csv_row())
                 .map_err(|error| format!("could not write CSV row: {error}"))?;
@@ -87,10 +99,11 @@ fn run() -> Result<(), String> {
             && let Some(voice) = report.voice.as_ref()
         {
             println!(
-                "  voice @ t={} ({},{}), {}, q={}, s_q={} [{}]: \"{}\"",
+                "  voice @ t={} ({},{}), {} {}, q={}, s_q={} [{}]: \"{}\"",
                 report.from_tick,
                 voice.x,
                 voice.y,
+                voice.species,
                 voice.economic_type,
                 voice.consciousness,
                 voice.experience_level,
@@ -101,9 +114,24 @@ fn run() -> Result<(), String> {
         if options.render_every > 0 && report.tick % options.render_every == 0 {
             println!("\ntick {}\n{}", report.tick, simulation.render());
         }
-        if report.after.alive == 0 {
-            println!("population extinct at tick {}", report.tick);
-            break;
+        let ecological_collapse = options.config.predator_prey_ecology
+            && (report.after.prey == 0 || report.after.predators == 0);
+        if report.after.alive == 0 || ecological_collapse {
+            if options.steps == 0 {
+                epoch = epoch.saturating_add(1);
+                let mut next_config = options.config.clone();
+                next_config.seed = epoch_seed(options.config.seed, epoch);
+                simulation = Simulation::random(next_config)?;
+                println!(
+                    "epoch {epoch} began after ecological collapse; seed={} prey={} predators={}",
+                    simulation.config().seed,
+                    simulation.population().prey,
+                    simulation.population().predators,
+                );
+            } else if report.after.alive == 0 {
+                println!("population extinct at tick {}", report.tick);
+                break;
+            }
         }
     }
 
@@ -116,8 +144,18 @@ fn run() -> Result<(), String> {
     println!(
         "Interpretation: this is a toy selection mechanism, not evidence that simulated cells feel anything."
     );
-    println!("Predators are deliberately reserved for phase 2.");
+    println!(
+        "Good and evil refer to cooperation or free-riding within a species; predation is ecological, not moral."
+    );
     Ok(())
+}
+
+fn epoch_seed(seed: u64, epoch: u64) -> u64 {
+    let mut value =
+        seed.wrapping_add(0x9e37_79b9_7f4a_7c15_u64.wrapping_mul(epoch.wrapping_add(1)));
+    value = (value ^ (value >> 30)).wrapping_mul(0xbf58_476d_1ce4_e5b9);
+    value = (value ^ (value >> 27)).wrapping_mul(0x94d0_49bb_1331_11eb);
+    value ^ (value >> 31)
 }
 
 fn print_summary(report: &StepReport) {
@@ -131,11 +169,14 @@ fn print_summary(report: &StepReport) {
         .collect::<Vec<_>>()
         .join(" ");
     println!(
-        "t={:>4}->{:<4} alive={:>5}->{:<5} C={:>5.1}%->{:.1}% mean_q={:.2}->{:.2} max_q={}->{} fit@{}={:>6.3} match_CC={:>5.1}% births={:>4} deaths={:>4} voices@{}[G:{} E:{} F:{} N:{} S:{}] {}",
+        "t={:>4}->{:<4} alive={:>5}->{:<5} prey={:>5} pred={:>5} activity={:>4} C={:>5.1}%->{:.1}% mean_q={:.2}->{:.2} max_q={}->{} fit@{}={:>6.3} match_CC={:>5.1}% births={:>4} captures={:>4} deaths={:>4} voices@{}[G:{} E:{} F:{} N:{} S:{}] {}",
         report.from_tick,
         report.tick,
         report.before.alive,
         report.after.alive,
+        report.after.prey,
+        report.after.predators,
+        report.changed_sites,
         100.0 * report.before.cooperator_share(),
         100.0 * report.after.cooperator_share(),
         report.before.mean_consciousness,
@@ -146,6 +187,7 @@ fn print_summary(report: &StepReport) {
         report.mean_fitness,
         100.0 * report.cooperative_match_rate,
         report.births,
+        report.captures,
         report.deaths,
         report.from_tick,
         report.good,
@@ -184,6 +226,26 @@ fn parse_args() -> Result<RunOptions, String> {
             "--conscious-seeds" => {
                 options.config.initial_conscious_share =
                     parse(&value(&mut args, "--conscious-seeds")?, "conscious-seeds")?
+            }
+            "--predators" => {
+                options.config.initial_predator_share =
+                    parse(&value(&mut args, "--predators")?, "predators")?
+            }
+            "--prey-birth" => {
+                options.config.prey_birth_rate =
+                    parse(&value(&mut args, "--prey-birth")?, "prey-birth")?
+            }
+            "--predation" => {
+                options.config.predation_rate =
+                    parse(&value(&mut args, "--predation")?, "predation")?
+            }
+            "--predator-death" => {
+                options.config.predator_starvation_rate =
+                    parse(&value(&mut args, "--predator-death")?, "predator-death")?
+            }
+            "--classic-conway" => {
+                options.config.predator_prey_ecology = false;
+                options.config.initial_predator_share = 0.0;
             }
             "--max-q" => {
                 options.config.max_consciousness = parse(&value(&mut args, "--max-q")?, "max-q")?
@@ -259,7 +321,7 @@ where
 fn print_help() {
     println!(
         "\
-conscious-life: prey-only cooperation and graded proto-consciousness in Conway's Life
+conscious-life: predator-prey ecology, cooperation, and graded inner mappings
 
 USAGE
   cargo run --release -- [OPTIONS]
@@ -267,12 +329,19 @@ USAGE
 CORE OPTIONS
   --width N                 Grid width (default 256)
   --height N                Grid height (default 256)
-  --steps N                 Generations (default 500)
+  --steps N                 Generations; 0 runs forever (default 500)
   --seed N                  Deterministic seed (default 7)
-  --density P               Initial live-cell density (default 0.28)
+  --density P               Initial live-cell density (default 0.48)
   --cooperators P           Initial cooperator share (default 0.55)
   --conscious-seeds P       Initial share of live cells with q=1 (default 0.02)
+  --predators P             Predator share among living cells (default 0.1667)
   --max-q N                 Maximum consciousness grade (default 8)
+
+ECOLOGY
+  --prey-birth P            Birth hazard per neighboring prey (default 0.12)
+  --predation P             Capture hazard per neighboring predator (default 0.06)
+  --predator-death P        Predator mortality per generation (default 0.16)
+  --classic-conway          Use the prey-only B3/S23 baseline
 
 EVOLUTION
   --selection X             Fitness strength in birth inheritance (default 0.85)
