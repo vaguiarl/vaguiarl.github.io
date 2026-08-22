@@ -1,0 +1,22 @@
+[package]
+name = "conscious-life"
+version = "0.1.0"
+edition = "2024"
+description = "A prey-only Conway laboratory for cooperation and graded proto-consciousness"
+license = "MIT"
+
+[lib]
+name = "conscious_life"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "conscious-life"
+path = "src/main.rs"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2"

@@ -1,0 +1,32 @@
+/* tslint:disable */
+/* eslint-disable */
+export const memory: WebAssembly.Memory;
+export const __wbg_consciouslife_free: (a: number, b: number) => void;
+export const consciouslife_new: (a: number, b: number, c: number) => [number, number, number];
+export const consciouslife_restart: (a: number, b: number) => [number, number];
+export const consciouslife_step_many: (a: number, b: number) => void;
+export const consciouslife_cells: (a: number) => [number, number];
+export const consciouslife_width: (a: number) => number;
+export const consciouslife_height: (a: number) => number;
+export const consciouslife_seed: (a: number) => number;
+export const consciouslife_generation: (a: number) => number;
+export const consciouslife_alive: (a: number) => number;
+export const consciouslife_cooperator_share: (a: number) => number;
+export const consciouslife_mean_q: (a: number) => number;
+export const consciouslife_max_q: (a: number) => number;
+export const consciouslife_inner_life_share: (a: number) => number;
+export const consciouslife_differentiated_share: (a: number) => number;
+export const consciouslife_good_reports: (a: number) => number;
+export const consciouslife_evil_reports: (a: number) => number;
+export const consciouslife_first_good_generation: (a: number) => number;
+export const consciouslife_first_evil_generation: (a: number) => number;
+export const consciouslife_voice_code: (a: number) => number;
+export const consciouslife_voice_text: (a: number) => [number, number];
+export const consciouslife_voice_x: (a: number) => number;
+export const consciouslife_voice_y: (a: number) => number;
+export const consciouslife_voice_q: (a: number) => number;
+export const consciouslife_voice_is_cooperator: (a: number) => number;
+export const __wbindgen_externrefs: WebAssembly.Table;
+export const __wbindgen_free: (a: number, b: number, c: number) => void;
+export const __externref_table_dealloc: (a: number) => void;
+export const __wbindgen_start: () => void;
