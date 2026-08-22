@@ -1,0 +1,324 @@
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #180e0c;
+}
+
+body {
+  overscroll-behavior: none;
+}
+
+.installation-root {
+  --installation-rail: clamp(18rem, 22vw, 23rem);
+  position: relative;
+  width: 100%;
+  min-width: 320px;
+  height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(199, 152, 62, 0.13), transparent 30rem),
+    radial-gradient(circle at 84% 76%, rgba(197, 100, 63, 0.1), transparent 34rem),
+    #180e0c;
+  color: var(--white);
+}
+
+.installation-root::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  opacity: 0.14;
+  background-image:
+    linear-gradient(45deg, transparent 48%, rgba(247, 240, 228, 0.1) 49% 51%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(247, 240, 228, 0.1) 49% 51%, transparent 52%);
+  background-size: 5.5rem 5.5rem;
+  -webkit-mask-image: radial-gradient(circle at center, transparent 38%, #000 100%);
+  mask-image: radial-gradient(circle at center, transparent 38%, #000 100%);
+  pointer-events: none;
+}
+
+.installation-toolbar {
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 4.2rem;
+  padding: 0.72rem clamp(0.85rem, 2vw, 1.6rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(255, 251, 243, 0.12);
+  background: rgba(24, 14, 12, 0.83);
+  box-shadow: 0 1rem 2.6rem rgba(8, 3, 2, 0.2);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+.installation-identity {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.72rem;
+  color: rgba(255, 251, 243, 0.92);
+}
+
+.installation-identity > span:first-child {
+  color: var(--gold);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.installation-identity > span:last-child {
+  min-width: 0;
+  display: grid;
+  gap: 0.16rem;
+}
+
+.installation-identity strong {
+  font-family: var(--serif);
+  font-size: 0.93rem;
+  font-weight: 400;
+  letter-spacing: 0.025em;
+}
+
+.installation-identity small {
+  overflow: hidden;
+  color: rgba(255, 251, 243, 0.46);
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.installation-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.42rem;
+}
+
+.installation-actions button {
+  min-height: 2.35rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid rgba(255, 251, 243, 0.17);
+  background: rgba(255, 251, 243, 0.035);
+  color: rgba(255, 251, 243, 0.72);
+  cursor: pointer;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.installation-actions button:hover:not(:disabled),
+.installation-actions button[aria-pressed="true"] {
+  border-color: rgba(231, 191, 107, 0.52);
+  background: rgba(199, 152, 62, 0.15);
+  color: #f0ce88;
+}
+
+.installation-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.installation-root > .conscious-life-section {
+  width: 100%;
+  height: 100dvh;
+  min-height: 0;
+  padding: 4.9rem 0 2.7rem;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: transparent;
+}
+
+.installation-root > .conscious-life-section::after,
+.installation-root .conscious-life-section > .inca-divider,
+.installation-root .conscious-life-section > .lab-orbit,
+.installation-root .section-intro,
+.installation-root .lab-explainer,
+.installation-root .lab-links {
+  display: none;
+}
+
+.installation-root .conscious-life-section .page-shell {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  display: grid;
+  place-items: center;
+}
+
+.installation-root .lab-stage {
+  width: min(
+    calc(100vw - 2rem),
+    calc(88.36rem + var(--installation-rail))
+  );
+  height: min(calc(100dvh - 7.6rem), 57rem);
+  grid-template-columns: minmax(0, 1fr) var(--installation-rail);
+  overflow: hidden;
+  border-color: rgba(255, 251, 243, 0.2);
+  background: rgba(14, 7, 6, 0.7);
+  box-shadow: 0 2.5rem 7rem rgba(7, 2, 2, 0.36);
+}
+
+.installation-root .lab-world-frame {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 3.5rem minmax(0, 1fr) 3.8rem;
+}
+
+.installation-root .lab-canvas-wrap {
+  width: auto;
+  height: 100%;
+  min-height: 0;
+  max-width: 100%;
+  max-height: 100%;
+  place-self: center;
+  aspect-ratio: 16 / 9;
+}
+
+.installation-root .lab-console {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  overflow: auto;
+  scrollbar-color: rgba(199, 152, 62, 0.42) transparent;
+  scrollbar-width: thin;
+}
+
+.installation-root.instruments-hidden .lab-stage {
+  width: min(
+    calc(100vw - 2rem),
+    88.36rem
+  );
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.installation-root.instruments-hidden .lab-world-frame {
+  border-right: 0;
+}
+
+.installation-root.instruments-hidden .lab-console {
+  display: none;
+}
+
+.installation-disclaimer {
+  position: fixed;
+  z-index: 20;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 2.35rem;
+  padding: 0.45rem clamp(0.85rem, 2vw, 1.6rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  border-top: 1px solid rgba(255, 251, 243, 0.1);
+  background: rgba(24, 14, 12, 0.86);
+  color: rgba(255, 251, 243, 0.46);
+  font-size: 0.52rem;
+  letter-spacing: 0.025em;
+  line-height: 1.35;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+.installation-disclaimer p {
+  margin: 0;
+}
+
+.installation-disclaimer strong {
+  color: rgba(255, 251, 243, 0.72);
+  font-weight: 650;
+}
+
+.installation-wake-status {
+  max-width: 32rem;
+  text-align: right;
+}
+
+.installation-root button:focus-visible,
+.installation-root a:focus-visible {
+  outline: 2px solid #e7bf6b;
+  outline-offset: 3px;
+}
+
+@media (max-width: 980px) {
+  .installation-root .lab-stage {
+    width: min(calc(100vw - 1.4rem), 88.36rem);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .installation-root .lab-world-frame {
+    border-right: 0;
+  }
+
+  .installation-root.instruments-open .lab-console {
+    position: absolute;
+    z-index: 8;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(92vw, 22rem);
+    height: 100%;
+    display: flex;
+    background: rgba(48, 27, 22, 0.97);
+    box-shadow: -2rem 0 5rem rgba(7, 2, 2, 0.48);
+  }
+}
+
+@media (max-width: 680px) {
+  .installation-toolbar {
+    min-height: 4.65rem;
+    align-items: flex-start;
+  }
+
+  .installation-identity > span:last-child {
+    display: none;
+  }
+
+  .installation-actions {
+    gap: 0.25rem;
+  }
+
+  .installation-actions button {
+    min-height: 2.1rem;
+    padding-inline: 0.42rem;
+    font-size: 0.47rem;
+  }
+
+  .installation-root > .conscious-life-section {
+    padding-top: 5.25rem;
+  }
+
+  .installation-root .lab-stage,
+  .installation-root.instruments-hidden .lab-stage {
+    width: calc(100vw - 0.8rem);
+    height: calc(100dvh - 8.35rem);
+  }
+
+  .installation-root .lab-world-head,
+  .installation-root .lab-legend {
+    padding-inline: 0.72rem;
+  }
+
+  .installation-wake-status {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .installation-root .lab-live-dot {
+    animation: none;
+  }
+}

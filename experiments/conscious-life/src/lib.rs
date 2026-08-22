@@ -4,6 +4,32 @@ use std::fmt;
 mod wasm;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Species {
+    Prey,
+    Predator,
+}
+
+impl Species {
+    const COUNT: usize = 2;
+
+    fn slot(self) -> usize {
+        match self {
+            Self::Prey => 0,
+            Self::Predator => 1,
+        }
+    }
+}
+
+impl fmt::Display for Species {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Prey => write!(f, "prey"),
+            Self::Predator => write!(f, "predator"),
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum EconomicType {
     Cooperator,
     Defector,
@@ -69,6 +95,7 @@ impl fmt::Display for MoralVoice {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Cell {
+    pub species: Species,
     pub economic_type: EconomicType,
     pub consciousness: u8,
     pub age: u32,
@@ -76,7 +103,12 @@ pub struct Cell {
 
 impl Cell {
     pub fn new(economic_type: EconomicType, consciousness: u8) -> Self {
+        Self::new_species(Species::Prey, economic_type, consciousness)
+    }
+
+    pub fn new_species(species: Species, economic_type: EconomicType, consciousness: u8) -> Self {
         Self {
+            species,
             economic_type,
             consciousness,
             age: 0,
@@ -149,6 +181,11 @@ pub struct Config {
     pub initial_density: f64,
     pub initial_cooperator_share: f64,
     pub initial_conscious_share: f64,
+    pub initial_predator_share: f64,
+    pub predator_prey_ecology: bool,
+    pub prey_birth_rate: f64,
+    pub predation_rate: f64,
+    pub predator_starvation_rate: f64,
     pub max_consciousness: u8,
     pub seed: u64,
     pub selection_strength: f64,
@@ -166,9 +203,14 @@ impl Default for Config {
         Self {
             width: 256,
             height: 256,
-            initial_density: 0.28,
+            initial_density: 0.48,
             initial_cooperator_share: 0.55,
             initial_conscious_share: 0.02,
+            initial_predator_share: 1.0 / 6.0,
+            predator_prey_ecology: true,
+            prey_birth_rate: 0.12,
+            predation_rate: 0.06,
+            predator_starvation_rate: 0.16,
             max_consciousness: 8,
             seed: 7,
             selection_strength: 0.85,
@@ -195,6 +237,10 @@ impl Config {
             ("initial density", self.initial_density),
             ("initial cooperator share", self.initial_cooperator_share),
             ("initial conscious share", self.initial_conscious_share),
+            ("initial predator share", self.initial_predator_share),
+            ("prey birth rate", self.prey_birth_rate),
+            ("predation rate", self.predation_rate),
+            ("predator starvation rate", self.predator_starvation_rate),
             ("economic mutation rate", self.economic_mutation_rate),
             (
                 "consciousness mutation rate",
@@ -300,6 +346,7 @@ impl Default for Assessment {
 pub struct VoiceReport {
     pub x: usize,
     pub y: usize,
+    pub species: Species,
     pub economic_type: EconomicType,
     pub consciousness: u8,
     pub experience_level: u8,
@@ -310,8 +357,12 @@ pub struct VoiceReport {
 #[derive(Clone, Debug)]
 pub struct PopulationStats {
     pub alive: usize,
+    pub prey: usize,
+    pub predators: usize,
     pub cooperators: usize,
     pub defectors: usize,
+    pub prey_cooperators: usize,
+    pub predator_cooperators: usize,
     pub mean_consciousness: f64,
     pub max_consciousness: u8,
     pub consciousness_histogram: Vec<usize>,
@@ -323,6 +374,22 @@ impl PopulationStats {
             0.0
         } else {
             self.cooperators as f64 / self.alive as f64
+        }
+    }
+
+    pub fn prey_cooperator_share(&self) -> f64 {
+        if self.prey == 0 {
+            0.0
+        } else {
+            self.prey_cooperators as f64 / self.prey as f64
+        }
+    }
+
+    pub fn predator_cooperator_share(&self) -> f64 {
+        if self.predators == 0 {
+            0.0
+        } else {
+            self.predator_cooperators as f64 / self.predators as f64
         }
     }
 }
@@ -337,9 +404,19 @@ pub struct StepReport {
     pub births: usize,
     pub deaths: usize,
     pub survivors: usize,
+    pub prey_births: usize,
+    pub predator_births: usize,
+    pub prey_deaths: usize,
+    pub predator_deaths: usize,
+    pub captures: usize,
+    pub changed_sites: usize,
     pub cooperative_match_rate: f64,
     pub good: usize,
     pub evil: usize,
+    pub prey_good: usize,
+    pub prey_evil: usize,
+    pub predator_good: usize,
+    pub predator_evil: usize,
     pub neutral: usize,
     pub felt: usize,
     pub silent: usize,
@@ -352,12 +429,16 @@ impl StepReport {
             "from_tick",
             "tick",
             "alive_before",
+            "prey_before",
+            "predators_before",
             "cooperators_before",
             "defectors_before",
             "cooperator_share_before",
             "mean_q_before",
             "max_q_before",
             "alive_after",
+            "prey_after",
+            "predators_after",
             "cooperators_after",
             "defectors_after",
             "cooperator_share_after",
@@ -367,9 +448,19 @@ impl StepReport {
             "births",
             "deaths",
             "survivors",
+            "prey_births",
+            "predator_births",
+            "prey_deaths",
+            "predator_deaths",
+            "captures",
+            "changed_sites",
             "cooperative_match_rate",
             "good",
             "evil",
+            "prey_good",
+            "prey_evil",
+            "predator_good",
+            "predator_evil",
             "neutral",
             "felt",
             "silent",
@@ -387,12 +478,16 @@ impl StepReport {
             self.from_tick.to_string(),
             self.tick.to_string(),
             self.before.alive.to_string(),
+            self.before.prey.to_string(),
+            self.before.predators.to_string(),
             self.before.cooperators.to_string(),
             self.before.defectors.to_string(),
             format!("{:.6}", self.before.cooperator_share()),
             format!("{:.6}", self.before.mean_consciousness),
             self.before.max_consciousness.to_string(),
             self.after.alive.to_string(),
+            self.after.prey.to_string(),
+            self.after.predators.to_string(),
             self.after.cooperators.to_string(),
             self.after.defectors.to_string(),
             format!("{:.6}", self.after.cooperator_share()),
@@ -402,9 +497,19 @@ impl StepReport {
             self.births.to_string(),
             self.deaths.to_string(),
             self.survivors.to_string(),
+            self.prey_births.to_string(),
+            self.predator_births.to_string(),
+            self.prey_deaths.to_string(),
+            self.predator_deaths.to_string(),
+            self.captures.to_string(),
+            self.changed_sites.to_string(),
             format!("{:.6}", self.cooperative_match_rate),
             self.good.to_string(),
             self.evil.to_string(),
+            self.prey_good.to_string(),
+            self.prey_evil.to_string(),
+            self.predator_good.to_string(),
+            self.predator_evil.to_string(),
             self.neutral.to_string(),
             self.felt.to_string(),
             self.silent.to_string(),
@@ -460,20 +565,36 @@ impl Rng64 {
     }
 }
 
+fn stream_seed(seed: u64, stream: u64) -> u64 {
+    let mut value = seed.wrapping_add(0x9e37_79b9_7f4a_7c15_u64.wrapping_mul(stream + 1));
+    value = (value ^ (value >> 30)).wrapping_mul(0xbf58_476d_1ce4_e5b9);
+    value = (value ^ (value >> 27)).wrapping_mul(0x94d0_49bb_1331_11eb);
+    value ^ (value >> 31)
+}
+
 pub struct Simulation {
     config: Config,
     grid: Vec<Option<Cell>>,
-    rng: Rng64,
+    events: Vec<u8>,
+    social_rng: Rng64,
+    ecology_rng: Rng64,
     tick: u64,
 }
 
 impl Simulation {
     pub fn random(config: Config) -> Result<Self, String> {
         config.validate()?;
-        let mut rng = Rng64::new(config.seed);
+        let seed = config.seed;
+        let mut rng = Rng64::new(stream_seed(seed, 0));
         let mut grid = Vec::with_capacity(config.width * config.height);
         for _ in 0..(config.width * config.height) {
             if rng.unit() < config.initial_density {
+                let species =
+                    if config.predator_prey_ecology && rng.unit() < config.initial_predator_share {
+                        Species::Predator
+                    } else {
+                        Species::Prey
+                    };
                 let economic_type = if rng.unit() < config.initial_cooperator_share {
                     EconomicType::Cooperator
                 } else {
@@ -484,24 +605,35 @@ impl Simulation {
                 } else {
                     0
                 };
-                grid.push(Some(Cell::new(economic_type, consciousness)));
+                grid.push(Some(Cell::new_species(
+                    species,
+                    economic_type,
+                    consciousness,
+                )));
             } else {
                 grid.push(None);
             }
         }
+        let events = vec![0; grid.len()];
         Ok(Self {
             config,
             grid,
-            rng,
+            events,
+            social_rng: Rng64::new(stream_seed(seed, 1)),
+            ecology_rng: Rng64::new(stream_seed(seed, 2)),
             tick: 0,
         })
     }
 
     pub fn empty(config: Config) -> Result<Self, String> {
         config.validate()?;
+        let seed = config.seed;
+        let size = config.width * config.height;
         Ok(Self {
-            grid: vec![None; config.width * config.height],
-            rng: Rng64::new(config.seed),
+            grid: vec![None; size],
+            events: vec![0; size],
+            social_rng: Rng64::new(stream_seed(seed, 1)),
+            ecology_rng: Rng64::new(stream_seed(seed, 2)),
             config,
             tick: 0,
         })
@@ -521,6 +653,7 @@ impl Simulation {
 
     pub fn set_cell(&mut self, x: usize, y: usize, cell: Option<Cell>) {
         let index = self.offset(x % self.config.width, y % self.config.height);
+        self.events[index] = 0;
         self.grid[index] = cell.map(|mut value| {
             value.consciousness = value.consciousness.min(self.config.max_consciousness);
             value
@@ -538,14 +671,21 @@ impl Simulation {
     pub fn packed_cells(&self) -> Vec<u8> {
         self.grid
             .iter()
-            .map(|cell| match cell {
+            .enumerate()
+            .map(|(index, cell)| match cell {
                 None => 0,
                 Some(cell) => {
                     let kind = u8::from(cell.economic_type == EconomicType::Defector) << 6;
-                    0b1000_0000 | kind | cell.consciousness.min(0b0000_1111)
+                    let species = u8::from(cell.species == Species::Predator) << 5;
+                    let changed = u8::from(self.events[index] != 0) << 4;
+                    0b1000_0000 | kind | species | changed | cell.consciousness.min(0b0000_1111)
                 }
             })
             .collect()
+    }
+
+    pub fn packed_events(&self) -> Vec<u8> {
+        self.events.clone()
     }
 
     fn offset(&self, x: usize, y: usize) -> usize {
@@ -582,7 +722,7 @@ impl Simulation {
 
     fn shuffle(&mut self, values: &mut [usize]) {
         for upper in (1..values.len()).rev() {
-            let other = self.rng.index(upper + 1);
+            let other = self.social_rng.index(upper + 1);
             values.swap(upper, other);
         }
     }
@@ -597,15 +737,16 @@ impl Simulation {
         let mut mimic_costs: Vec<f64> = vec![0.0; size];
 
         let grades = usize::from(self.config.max_consciousness) + 1;
-        let mut population_at_q = vec![0_usize; grades];
-        let mut cooperators_at_q = vec![0_usize; grades];
+        let mut population_at_q = vec![0_usize; Species::COUNT * grades];
+        let mut cooperators_at_q = vec![0_usize; Species::COUNT * grades];
         for cell in current.iter().flatten() {
             let q = usize::from(cell.consciousness);
-            population_at_q[q] += 1;
-            cooperators_at_q[q] += usize::from(cell.economic_type == EconomicType::Cooperator);
+            let market = cell.species.slot() * grades + q;
+            population_at_q[market] += 1;
+            cooperators_at_q[market] += usize::from(cell.economic_type == EconomicType::Cooperator);
         }
 
-        let mut match_groups = vec![Vec::<usize>::new(); grades * Persona::COUNT];
+        let mut match_groups = vec![Vec::<usize>::new(); Species::COUNT * grades * Persona::COUNT];
         for (index, cell) in current.iter().enumerate() {
             let Some(cell) = cell else {
                 continue;
@@ -616,8 +757,10 @@ impl Simulation {
             } else if cell.economic_type == EconomicType::Cooperator {
                 Persona::Cooperative
             } else {
-                let cooperator_share = cooperators_at_q[q] as f64 / population_at_q[q] as f64;
-                if self.rng.unit()
+                let market = cell.species.slot() * grades + q;
+                let cooperator_share =
+                    cooperators_at_q[market] as f64 / population_at_q[market] as f64;
+                if self.social_rng.unit()
                     < self
                         .config
                         .mimic_probability(cell.consciousness, cooperator_share)
@@ -628,7 +771,8 @@ impl Simulation {
                     Persona::Defective
                 }
             };
-            match_groups[q * Persona::COUNT + persona.slot()].push(index);
+            let market = cell.species.slot() * grades + q;
+            match_groups[market * Persona::COUNT + persona.slot()].push(index);
         }
 
         let living_indices = current
@@ -636,13 +780,19 @@ impl Simulation {
             .enumerate()
             .filter_map(|(index, cell)| cell.map(|_| index))
             .collect::<Vec<_>>();
+        let mut living_by_species = vec![Vec::<usize>::new(); Species::COUNT];
+        for &index in &living_indices {
+            let cell = current[index].expect("living index");
+            living_by_species[cell.species.slot()].push(index);
+        }
         let mut interactions = Vec::<(usize, usize)>::new();
-        let mut singleton_markets = Vec::<usize>::new();
-        for group in &mut match_groups {
+        let mut singleton_markets = vec![Vec::<usize>::new(); Species::COUNT];
+        for (group_index, group) in match_groups.iter_mut().enumerate() {
+            let species_slot = group_index / (grades * Persona::COUNT);
             self.shuffle(group);
             match group.len() {
                 0 => {}
-                1 => singleton_markets.push(group[0]),
+                1 => singleton_markets[species_slot].push(group[0]),
                 length if length % 2 == 0 => {
                     interactions.extend(group.chunks_exact(2).map(|pair| (pair[0], pair[1])));
                 }
@@ -653,7 +803,7 @@ impl Simulation {
                             .chunks_exact(2)
                             .map(|pair| (pair[0], pair[1])),
                     );
-                    singleton_markets.push(group[length - 1]);
+                    singleton_markets[species_slot].push(group[length - 1]);
                 }
             }
         }
@@ -661,21 +811,21 @@ impl Simulation {
         // The paper falls back to random population matching when a persona market
         // is empty. Pairing the remainders together gives every rare mutant a match
         // without making all members of an odd market play twice.
-        self.shuffle(&mut singleton_markets);
-        interactions.extend(
-            singleton_markets
-                .chunks_exact(2)
-                .map(|pair| (pair[0], pair[1])),
-        );
-        if singleton_markets.len() % 2 == 1
-            && living_indices.len() > 1
-            && let Some(&singleton) = singleton_markets.last()
-        {
-            let mut partner = living_indices[self.rng.index(living_indices.len())];
-            while partner == singleton {
-                partner = living_indices[self.rng.index(living_indices.len())];
+        for species_slot in 0..Species::COUNT {
+            let mut remainders = std::mem::take(&mut singleton_markets[species_slot]);
+            self.shuffle(&mut remainders);
+            interactions.extend(remainders.chunks_exact(2).map(|pair| (pair[0], pair[1])));
+            if remainders.len() % 2 == 1
+                && living_by_species[species_slot].len() > 1
+                && let Some(&singleton) = remainders.last()
+            {
+                let candidates = &living_by_species[species_slot];
+                let mut partner = candidates[self.social_rng.index(candidates.len())];
+                while partner == singleton {
+                    partner = candidates[self.social_rng.index(candidates.len())];
+                }
+                interactions.push((singleton, partner));
             }
-            interactions.push((singleton, partner));
         }
 
         let mut cooperator_matches = 0;
@@ -711,9 +861,10 @@ impl Simulation {
         }
         debug_assert!(
             living_indices.len() <= 1
-                || living_indices
-                    .iter()
-                    .all(|index| { interaction_counts[*index] > 0 })
+                || living_indices.iter().all(|index| {
+                    let species = current[*index].expect("living cell").species;
+                    living_by_species[species.slot()].len() == 1 || interaction_counts[*index] > 0
+                })
         );
 
         let mut assessments = vec![Assessment::default(); size];
@@ -721,6 +872,10 @@ impl Simulation {
         let mut evaluated = 0;
         let mut good = 0;
         let mut evil = 0;
+        let mut prey_good = 0;
+        let mut prey_evil = 0;
+        let mut predator_good = 0;
+        let mut predator_evil = 0;
         let mut neutral = 0;
         let mut felt = 0;
         let mut silent = 0;
@@ -738,7 +893,8 @@ impl Simulation {
                 .iter()
                 .filter(|neighbor| {
                     current[**neighbor].is_some_and(|candidate| {
-                        candidate.economic_type == EconomicType::Cooperator
+                        candidate.species == cell.species
+                            && candidate.economic_type == EconomicType::Cooperator
                     })
                 })
                 .count() as u8;
@@ -763,8 +919,20 @@ impl Simulation {
             );
             let voice = moral_voice(cell.consciousness, ethical_signal);
             match voice {
-                MoralVoice::Good => good += 1,
-                MoralVoice::Evil => evil += 1,
+                MoralVoice::Good => {
+                    good += 1;
+                    match cell.species {
+                        Species::Prey => prey_good += 1,
+                        Species::Predator => predator_good += 1,
+                    }
+                }
+                MoralVoice::Evil => {
+                    evil += 1;
+                    match cell.species {
+                        Species::Prey => prey_evil += 1,
+                        Species::Predator => predator_evil += 1,
+                    }
+                }
                 MoralVoice::Neutral => neutral += 1,
                 MoralVoice::Felt => felt += 1,
                 MoralVoice::Silent => silent += 1,
@@ -808,46 +976,154 @@ impl Simulation {
                 VoiceReport {
                     x,
                     y,
+                    species: cell.species,
                     economic_type: cell.economic_type,
                     consciousness: cell.consciousness,
                     experience_level: assessment.experience_level,
                     moral_voice: assessment.voice,
-                    utterance: utterance(assessment.voice),
+                    utterance: utterance(cell.species, assessment.voice),
                 }
             });
 
-        let mut next = vec![None; size];
+        let mut next = if self.config.predator_prey_ecology {
+            current.clone()
+        } else {
+            vec![None; size]
+        };
         let mut births = 0;
         let mut deaths = 0;
-        let mut survivors = 0;
-        for index in 0..size {
-            let neighbors = self.neighbors(index);
-            let mut living = [0_usize; 8];
-            let mut living_count = 0;
-            for neighbor in neighbors {
-                if current[neighbor].is_some() {
-                    living[living_count] = neighbor;
-                    living_count += 1;
+        let mut prey_births = 0;
+        let mut predator_births = 0;
+        let mut prey_deaths = 0;
+        let mut predator_deaths = 0;
+        let mut captures = 0;
+        let mut events = vec![0_u8; size];
+
+        if !self.config.predator_prey_ecology {
+            for index in 0..size {
+                let neighbors = self.neighbors(index);
+                let mut living = [0_usize; 8];
+                let mut living_count = 0;
+                for neighbor in neighbors {
+                    if current[neighbor].is_some() {
+                        living[living_count] = neighbor;
+                        living_count += 1;
+                    }
+                }
+                match current[index] {
+                    Some(mut cell) if living_count == 2 || living_count == 3 => {
+                        cell.age = cell.age.saturating_add(1);
+                        next[index] = Some(cell);
+                    }
+                    Some(cell) => {
+                        events[index] = 3;
+                        deaths += 1;
+                        match cell.species {
+                            Species::Prey => prey_deaths += 1,
+                            Species::Predator => predator_deaths += 1,
+                        }
+                    }
+                    None if living_count == 3 => {
+                        let parent_index =
+                            self.select_parent(&living[..living_count], &assessments);
+                        let parent = current[parent_index].expect("birth parent");
+                        let child = self.mutated_child(parent);
+                        match child.species {
+                            Species::Prey => prey_births += 1,
+                            Species::Predator => predator_births += 1,
+                        }
+                        next[index] = Some(child);
+                        events[index] = 1;
+                        births += 1;
+                    }
+                    None => {}
                 }
             }
-            match current[index] {
-                Some(mut cell) if living_count == 2 || living_count == 3 => {
-                    cell.age = cell.age.saturating_add(1);
-                    next[index] = Some(cell);
-                    survivors += 1;
+        } else {
+            // A synchronous spatial contact process on Conway's torus. Every
+            // transition reads the same snapshot, so each site changes at most
+            // once per generation and all flows have an exact accounting.
+            for index in 0..size {
+                let neighbors = self.neighbors(index);
+                let prey = neighbors
+                    .iter()
+                    .copied()
+                    .filter(|neighbor| {
+                        current[*neighbor].is_some_and(|cell| cell.species == Species::Prey)
+                    })
+                    .collect::<Vec<_>>();
+                let predators = neighbors
+                    .iter()
+                    .copied()
+                    .filter(|neighbor| {
+                        current[*neighbor].is_some_and(|cell| cell.species == Species::Predator)
+                    })
+                    .collect::<Vec<_>>();
+
+                match current[index] {
+                    None if !prey.is_empty() => {
+                        let probability =
+                            contact_probability(self.config.prey_birth_rate, prey.len());
+                        if self.ecology_rng.unit() < probability {
+                            let parent_index = self.select_parent(&prey, &assessments);
+                            let parent = current[parent_index].expect("prey parent");
+                            next[index] = Some(self.mutated_child(parent));
+                            events[index] = 1;
+                            births += 1;
+                            prey_births += 1;
+                        }
+                    }
+                    Some(cell) if cell.species == Species::Prey && !predators.is_empty() => {
+                        let probability =
+                            contact_probability(self.config.predation_rate, predators.len());
+                        if self.ecology_rng.unit() < probability {
+                            let parent_index = self.select_parent(&predators, &assessments);
+                            let parent = current[parent_index].expect("predator parent");
+                            next[index] = Some(self.mutated_child(parent));
+                            events[index] = 2;
+                            births += 1;
+                            deaths += 1;
+                            predator_births += 1;
+                            prey_deaths += 1;
+                            captures += 1;
+                        } else {
+                            let mut survivor = cell;
+                            survivor.age = survivor.age.saturating_add(1);
+                            next[index] = Some(survivor);
+                        }
+                    }
+                    Some(cell) if cell.species == Species::Predator => {
+                        if self.ecology_rng.unit() < self.config.predator_starvation_rate {
+                            next[index] = None;
+                            events[index] = 3;
+                            deaths += 1;
+                            predator_deaths += 1;
+                        } else {
+                            let mut survivor = cell;
+                            survivor.age = survivor.age.saturating_add(1);
+                            next[index] = Some(survivor);
+                        }
+                    }
+                    Some(mut cell) => {
+                        cell.age = cell.age.saturating_add(1);
+                        next[index] = Some(cell);
+                    }
+                    None => {}
                 }
-                Some(_) => deaths += 1,
-                None if living_count == 3 => {
-                    let parent_index = self.select_parent(&living[..living_count], &assessments);
-                    let parent = current[parent_index].expect("birth parent");
-                    next[index] = Some(self.mutated_child(parent));
-                    births += 1;
-                }
-                None => {}
             }
         }
 
+        let survivors = before.alive.saturating_sub(deaths);
+        let changed_sites = current
+            .iter()
+            .zip(&next)
+            .filter(|(before_cell, after_cell)| {
+                visible_cell_state(**before_cell) != visible_cell_state(**after_cell)
+            })
+            .count();
+
         self.grid = next;
+        self.events = events;
         let from_tick = self.tick;
         self.tick += 1;
         let after = self.population_summary();
@@ -864,6 +1140,12 @@ impl Simulation {
             births,
             deaths,
             survivors,
+            prey_births,
+            predator_births,
+            prey_deaths,
+            predator_deaths,
+            captures,
+            changed_sites,
             cooperative_match_rate: if cooperator_partnered == 0 {
                 0.0
             } else {
@@ -871,6 +1153,10 @@ impl Simulation {
             },
             good,
             evil,
+            prey_good,
+            prey_evil,
+            predator_good,
+            predator_evil,
             neutral,
             felt,
             silent,
@@ -893,7 +1179,7 @@ impl Simulation {
             weights[slot] = weight;
             total += weight;
         }
-        let mut draw = self.rng.unit() * total;
+        let mut draw = self.social_rng.unit() * total;
         for (slot, parent) in parents.iter().copied().enumerate() {
             if draw <= weights[slot] {
                 return parent;
@@ -905,39 +1191,59 @@ impl Simulation {
 
     fn mutated_child(&mut self, parent: Cell) -> Cell {
         let mut economic_type = parent.economic_type;
-        if self.rng.unit() < self.config.economic_mutation_rate {
+        if self.social_rng.unit() < self.config.economic_mutation_rate {
             economic_type = economic_type.flipped();
         }
         let mut consciousness = parent.consciousness;
-        if self.rng.unit() < self.config.consciousness_mutation_rate {
+        if self.social_rng.unit() < self.config.consciousness_mutation_rate {
             if consciousness == 0 {
                 consciousness = 1;
-            } else if consciousness == self.config.max_consciousness || self.rng.unit() < 0.5 {
+            } else if consciousness == self.config.max_consciousness || self.social_rng.unit() < 0.5
+            {
                 consciousness -= 1;
             } else {
                 consciousness += 1;
             }
         }
-        Cell::new(economic_type, consciousness)
+        Cell::new_species(parent.species, economic_type, consciousness)
     }
 
     fn population_summary(&self) -> PopulationStats {
         let mut alive = 0;
+        let mut prey = 0;
+        let mut predators = 0;
         let mut cooperators = 0;
+        let mut prey_cooperators = 0;
+        let mut predator_cooperators = 0;
         let mut max_q = 0;
         let mut total_q = 0;
         let mut histogram = vec![0; usize::from(self.config.max_consciousness) + 1];
         for cell in self.grid.iter().flatten() {
             alive += 1;
-            cooperators += usize::from(cell.economic_type == EconomicType::Cooperator);
+            let is_cooperator = cell.economic_type == EconomicType::Cooperator;
+            cooperators += usize::from(is_cooperator);
+            match cell.species {
+                Species::Prey => {
+                    prey += 1;
+                    prey_cooperators += usize::from(is_cooperator);
+                }
+                Species::Predator => {
+                    predators += 1;
+                    predator_cooperators += usize::from(is_cooperator);
+                }
+            }
             max_q = max_q.max(cell.consciousness);
             total_q += usize::from(cell.consciousness);
             histogram[usize::from(cell.consciousness)] += 1;
         }
         PopulationStats {
             alive,
+            prey,
+            predators,
             cooperators,
             defectors: alive - cooperators,
+            prey_cooperators,
+            predator_cooperators,
             mean_consciousness: if alive == 0 {
                 0.0
             } else {
@@ -955,23 +1261,49 @@ impl Simulation {
                 let glyph = match self.cell(x, y) {
                     None => ' ',
                     Some(Cell {
+                        species: Species::Prey,
                         economic_type: EconomicType::Cooperator,
                         consciousness: 0,
                         ..
                     }) => 'o',
                     Some(Cell {
+                        species: Species::Prey,
                         economic_type: EconomicType::Cooperator,
                         ..
                     }) => 'O',
                     Some(Cell {
+                        species: Species::Prey,
                         economic_type: EconomicType::Defector,
                         consciousness: 0,
                         ..
                     }) => 'x',
                     Some(Cell {
+                        species: Species::Prey,
                         economic_type: EconomicType::Defector,
                         ..
                     }) => 'X',
+                    Some(Cell {
+                        species: Species::Predator,
+                        economic_type: EconomicType::Cooperator,
+                        consciousness: 0,
+                        ..
+                    }) => 'v',
+                    Some(Cell {
+                        species: Species::Predator,
+                        economic_type: EconomicType::Cooperator,
+                        ..
+                    }) => 'V',
+                    Some(Cell {
+                        species: Species::Predator,
+                        economic_type: EconomicType::Defector,
+                        consciousness: 0,
+                        ..
+                    }) => 'w',
+                    Some(Cell {
+                        species: Species::Predator,
+                        economic_type: EconomicType::Defector,
+                        ..
+                    }) => 'W',
                 };
                 output.push(glyph);
             }
@@ -981,7 +1313,16 @@ impl Simulation {
     }
 }
 
+fn visible_cell_state(cell: Option<Cell>) -> Option<(Species, EconomicType, u8)> {
+    cell.map(|cell| (cell.species, cell.economic_type, cell.consciousness))
+}
+
+fn contact_probability(rate: f64, neighbors: usize) -> f64 {
+    1.0 - (1.0 - rate).powi(neighbors.min(i32::MAX as usize) as i32)
+}
+
 fn remember_partner_type(slot: &mut Option<EconomicType>, focal: Cell, partner: Cell) {
+    debug_assert_eq!(focal.species, partner.species);
     let exploitation_is_more_salient = focal.economic_type == EconomicType::Defector
         && partner.economic_type == EconomicType::Cooperator;
     if slot.is_none() || exploitation_is_more_salient {
@@ -1028,15 +1369,19 @@ pub fn subjective_level(
     }
 }
 
-pub fn utterance(voice: MoralVoice) -> &'static str {
-    match voice {
-        MoralVoice::Silent => "...",
-        MoralVoice::Felt => "Something mattered, but I cannot yet separate good from evil.",
-        MoralVoice::Good => "Good: I paid a cost that helped another.",
-        MoralVoice::Evil => {
-            "Evil: I took the gain from another's cooperation without paying its cost."
+pub fn utterance(species: Species, voice: MoralVoice) -> &'static str {
+    match (species, voice) {
+        (_, MoralVoice::Silent) => "...",
+        (_, MoralVoice::Felt) => "Something mattered, but I cannot yet separate good from evil.",
+        (Species::Prey, MoralVoice::Good) => "Good: I shared a warning another prey could use.",
+        (Species::Prey, MoralVoice::Evil) => {
+            "Evil: I used another prey's warning without contributing."
         }
-        MoralVoice::Neutral => "Neither: no cooperative act occurred in this encounter.",
+        (Species::Predator, MoralVoice::Good) => "Good: I contributed to the pack.",
+        (Species::Predator, MoralVoice::Evil) => {
+            "Evil: I took the pack's gain without contributing."
+        }
+        (_, MoralVoice::Neutral) => "Neither: no cooperative act occurred in this encounter.",
     }
 }
 
@@ -1051,6 +1396,8 @@ mod tests {
             initial_density: 0.0,
             initial_cooperator_share: 1.0,
             initial_conscious_share: 0.0,
+            initial_predator_share: 0.0,
+            predator_prey_ecology: false,
             economic_mutation_rate: 0.0,
             consciousness_mutation_rate: 0.0,
             ..Config::default()
@@ -1104,6 +1451,13 @@ mod tests {
         assert_eq!(moral_voice(1, -1), MoralVoice::Felt);
         assert_eq!(moral_voice(1, 1), MoralVoice::Felt);
         assert_eq!(moral_voice(1, 0), MoralVoice::Neutral);
+    }
+
+    #[test]
+    fn contact_hazards_accumulate_over_neighbors() {
+        assert!((contact_probability(0.12, 0) - 0.0).abs() < 1e-12);
+        assert!((contact_probability(0.12, 2) - 0.2256).abs() < 1e-12);
+        assert!((contact_probability(0.06, 2) - 0.1164).abs() < 1e-12);
     }
 
     #[test]
@@ -1167,6 +1521,175 @@ mod tests {
     }
 
     #[test]
+    fn social_matching_never_crosses_species() {
+        let mut simulation = Simulation::empty(small_config()).unwrap();
+        simulation.set_cell(1, 1, Some(Cell::new(EconomicType::Cooperator, 2)));
+        simulation.set_cell(
+            5,
+            5,
+            Some(Cell::new_species(
+                Species::Predator,
+                EconomicType::Defector,
+                2,
+            )),
+        );
+
+        let report = simulation.step();
+        assert_eq!(report.good, 0);
+        assert_eq!(report.evil, 0);
+    }
+
+    #[test]
+    fn predator_society_can_report_good_and_evil_without_moralizing_predation() {
+        let mut simulation = Simulation::empty(small_config()).unwrap();
+        simulation.set_cell(
+            2,
+            3,
+            Some(Cell::new_species(
+                Species::Predator,
+                EconomicType::Cooperator,
+                2,
+            )),
+        );
+        simulation.set_cell(
+            4,
+            3,
+            Some(Cell::new_species(
+                Species::Predator,
+                EconomicType::Defector,
+                2,
+            )),
+        );
+
+        let report = simulation.step();
+        assert_eq!(report.predator_good, 1);
+        assert_eq!(report.predator_evil, 1);
+        assert_eq!(report.prey_good, 0);
+        assert_eq!(report.prey_evil, 0);
+    }
+
+    #[test]
+    fn packed_cells_encode_species_strategy_and_q_separately() {
+        let mut simulation = Simulation::empty(small_config()).unwrap();
+        simulation.set_cell(0, 0, Some(Cell::new(EconomicType::Cooperator, 3)));
+        simulation.set_cell(1, 0, Some(Cell::new(EconomicType::Defector, 3)));
+        simulation.set_cell(
+            2,
+            0,
+            Some(Cell::new_species(
+                Species::Predator,
+                EconomicType::Cooperator,
+                3,
+            )),
+        );
+        simulation.set_cell(
+            3,
+            0,
+            Some(Cell::new_species(
+                Species::Predator,
+                EconomicType::Defector,
+                3,
+            )),
+        );
+
+        let cells = simulation.packed_cells();
+        assert_eq!(cells[0], 0x83);
+        assert_eq!(cells[1], 0xc3);
+        assert_eq!(cells[2], 0xa3);
+        assert_eq!(cells[3], 0xe3);
+    }
+
+    #[test]
+    fn predator_prey_accounting_is_exact() {
+        let config = Config {
+            width: 32,
+            height: 24,
+            seed: 19,
+            ..Config::default()
+        };
+        let mut simulation = Simulation::random(config).unwrap();
+        for _ in 0..200 {
+            let report = simulation.step();
+            assert_eq!(
+                report.after.prey + report.captures,
+                report.before.prey + report.prey_births
+            );
+            assert_eq!(
+                report.after.predators + report.predator_deaths,
+                report.before.predators + report.captures
+            );
+            assert_eq!(
+                report.after.alive + report.deaths,
+                report.before.alive + report.births
+            );
+            assert_eq!(
+                report.changed_sites,
+                report.prey_births + report.captures + report.predator_deaths
+            );
+        }
+    }
+
+    #[test]
+    fn calibrated_ecology_stays_active_with_both_species() {
+        for seed in 1..=3 {
+            let config = Config {
+                width: 32,
+                height: 24,
+                seed,
+                ..Config::default()
+            };
+            let size = config.width * config.height;
+            let mut simulation = Simulation::random(config).unwrap();
+            let mut activity = 0;
+            for _ in 0..600 {
+                activity += simulation.step().changed_sites;
+            }
+            let population = simulation.population();
+            assert!(population.prey > 0, "prey vanished for seed {seed}");
+            assert!(
+                population.predators > 0,
+                "predators vanished for seed {seed}"
+            );
+            assert!(activity as f64 / (600 * size) as f64 > 0.05);
+        }
+    }
+
+    #[test]
+    fn social_parameters_do_not_change_the_ecological_path() {
+        let baseline = Config {
+            width: 24,
+            height: 18,
+            seed: 73,
+            ..Config::default()
+        };
+        let altered = Config {
+            selection_strength: 8.0,
+            economic_mutation_rate: 1.0,
+            consciousness_mutation_rate: 1.0,
+            mimic_fixed_cost: 12.0,
+            mimic_slope: 4.0,
+            biological_fixed_cost: 3.0,
+            biological_slope: 2.0,
+            ..baseline.clone()
+        };
+        let mut first = Simulation::random(baseline).unwrap();
+        let mut second = Simulation::random(altered).unwrap();
+
+        for _ in 0..100 {
+            first.step();
+            second.step();
+            for y in 0..first.config().height {
+                for x in 0..first.config().width {
+                    assert_eq!(
+                        first.cell(x, y).map(|cell| cell.species),
+                        second.cell(x, y).map(|cell| cell.species)
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
     fn seeded_runs_are_deterministic() {
         let config = Config {
             width: 32,
@@ -1194,6 +1717,8 @@ mod tests {
             width: 24,
             height: 18,
             seed: 41,
+            initial_predator_share: 0.0,
+            predator_prey_ecology: false,
             selection_strength: 0.0,
             economic_mutation_rate: 0.0,
             consciousness_mutation_rate: 0.0,

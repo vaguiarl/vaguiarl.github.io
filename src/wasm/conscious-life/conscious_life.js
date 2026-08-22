@@ -14,8 +14,22 @@ export class ConsciousLife {
     /**
      * @returns {number}
      */
+    activity_share() {
+        const ret = wasm.consciouslife_activity_share(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {number}
+     */
     alive() {
         const ret = wasm.consciouslife_alive(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * @returns {number}
+     */
+    captures() {
+        const ret = wasm.consciouslife_captures(this.__wbg_ptr);
         return ret >>> 0;
     }
     /**
@@ -44,6 +58,22 @@ export class ConsciousLife {
     /**
      * @returns {number}
      */
+    empty() {
+        const ret = wasm.consciouslife_empty(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * @returns {Uint8Array}
+     */
+    events() {
+        const ret = wasm.consciouslife_events(this.__wbg_ptr);
+        var v1 = getArrayU8FromWasm0(ret[0], ret[1]).slice();
+        wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
+        return v1;
+    }
+    /**
+     * @returns {number}
+     */
     evil_reports() {
         const ret = wasm.consciouslife_evil_reports(this.__wbg_ptr);
         return ret >>> 0;
@@ -60,6 +90,34 @@ export class ConsciousLife {
      */
     first_good_generation() {
         const ret = wasm.consciouslife_first_good_generation(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {number}
+     */
+    first_predator_evil_generation() {
+        const ret = wasm.consciouslife_first_predator_evil_generation(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {number}
+     */
+    first_predator_good_generation() {
+        const ret = wasm.consciouslife_first_predator_good_generation(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {number}
+     */
+    first_prey_evil_generation() {
+        const ret = wasm.consciouslife_first_prey_evil_generation(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {number}
+     */
+    first_prey_good_generation() {
+        const ret = wasm.consciouslife_first_prey_good_generation(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -119,6 +177,76 @@ export class ConsciousLife {
         return this;
     }
     /**
+     * @returns {number}
+     */
+    predator_cooperator_share() {
+        const ret = wasm.consciouslife_predator_cooperator_share(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {number}
+     */
+    predator_deaths() {
+        const ret = wasm.consciouslife_predator_deaths(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * @returns {number}
+     */
+    predator_evil_reports() {
+        const ret = wasm.consciouslife_predator_evil_reports(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * @returns {number}
+     */
+    predator_good_reports() {
+        const ret = wasm.consciouslife_predator_good_reports(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * @returns {number}
+     */
+    predators() {
+        const ret = wasm.consciouslife_predators(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * @returns {number}
+     */
+    prey() {
+        const ret = wasm.consciouslife_prey(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * @returns {number}
+     */
+    prey_births() {
+        const ret = wasm.consciouslife_prey_births(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * @returns {number}
+     */
+    prey_cooperator_share() {
+        const ret = wasm.consciouslife_prey_cooperator_share(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {number}
+     */
+    prey_evil_reports() {
+        const ret = wasm.consciouslife_prey_evil_reports(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * @returns {number}
+     */
+    prey_good_reports() {
+        const ret = wasm.consciouslife_prey_good_reports(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
      * @param {number} seed
      */
     restart(seed) {
@@ -152,6 +280,13 @@ export class ConsciousLife {
      */
     voice_is_cooperator() {
         const ret = wasm.consciouslife_voice_is_cooperator(this.__wbg_ptr);
+        return ret !== 0;
+    }
+    /**
+     * @returns {boolean}
+     */
+    voice_is_predator() {
+        const ret = wasm.consciouslife_voice_is_predator(this.__wbg_ptr);
         return ret !== 0;
     }
     /**
