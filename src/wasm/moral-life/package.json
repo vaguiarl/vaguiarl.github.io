@@ -1,0 +1,17 @@
+{
+  "name": "moral-life",
+  "type": "module",
+  "description": "A spatial evolutionary laboratory for exploitation, reputation, sanctions, and forgiveness",
+  "version": "0.1.0",
+  "license": "MIT",
+  "files": [
+    "moral_life_bg.wasm",
+    "moral_life.js",
+    "moral_life.d.ts"
+  ],
+  "main": "moral_life.js",
+  "types": "moral_life.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
