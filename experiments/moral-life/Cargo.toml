@@ -1,0 +1,18 @@
+[package]
+name = "moral-life"
+version = "0.1.0"
+edition = "2024"
+description = "A spatial evolutionary laboratory for exploitation, reputation, sanctions, and forgiveness"
+license = "MIT"
+
+[lib]
+name = "moral_life"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2"

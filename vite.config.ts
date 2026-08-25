@@ -8,7 +8,7 @@ export default defineConfig({
     target: "es2022",
     cssMinify: true,
     rolldownOptions: {
-      input: ["index.html", "conscious-life/index.html"],
+      input: ["index.html", "conscious-life/index.html", "moral-life/index.html"],
     },
   },
 });

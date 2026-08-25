@@ -676,6 +676,7 @@ export default function ConsciousLifeLab() {
         </div>
 
         <div className="lab-links">
+          <a href="/moral-life/">Enter Moral Life · World II <span aria-hidden="true">↗</span></a>
           <a href="/conscious-life/">Open the living installation <span aria-hidden="true">↗</span></a>
           <a href="https://www.linkedin.com/pulse/can-ai-reveal-inner-life-victor-aguiar-ph-d--0fn2c/" target="_blank" rel="noreferrer">Read the public essay <span aria-hidden="true">↗</span></a>
           <a href="https://github.com/vaguiarl/vaguiarl.github.io/tree/main/experiments/conscious-life" target="_blank" rel="noreferrer">Inspect the Rust model <span aria-hidden="true">↗</span></a>
