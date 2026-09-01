@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-type ResearchKind = "working" | "publication" | "short" | "chapter";
+type ResearchKind = "accepted" | "working" | "publication" | "short" | "chapter";
 
 type ResearchItem = {
   year: string;
@@ -107,6 +107,16 @@ const featuredResearch = [
   {
     number: "01",
     year: "2026",
+    status: "Conditionally accepted · ReStat",
+    title: "A Rationalization of the Weak Axiom of Revealed Preference",
+    copy: "An Afriat theorem for WGARP: coherent utility coalitions forbid binary reversals while allowing longer cycles and admissible counterfactual demand.",
+    illustration: "./illustrations/paper_weak_axiom_v2.webp",
+    illustrationAlt: "Overlapping utility coalitions allowing a three-choice cycle without binary reversals beside an admissible bundle on a new budget",
+    href: "https://arxiv.org/abs/1906.00296",
+  },
+  {
+    number: "02",
+    year: "2026",
     status: "New working paper",
     title: "Tabular Foundation Models and the Unity of Economic Behaviour",
     copy: "Eight choice domains enter one frozen tabular representation; a shared utility ruler reconstructs the domain held out for each person.",
@@ -115,7 +125,7 @@ const featuredResearch = [
     href: "https://arxiv.org/abs/2608.06842",
   },
   {
-    number: "02",
+    number: "03",
     year: "2026",
     status: "Working paper · July 2026",
     title: "Entangled vs. Separable Choice",
@@ -125,7 +135,7 @@ const featuredResearch = [
     href: "https://www.researchgate.net/publication/378938384_Entangled_vs_Separable_Choice",
   },
   {
-    number: "03",
+    number: "04",
     year: "2026",
     status: "Working paper",
     title: "GARP-EFM: Improving Foundation Models with Revealed Preference Structure",
@@ -134,19 +144,17 @@ const featuredResearch = [
     illustrationAlt: "Three-good budget histories passing through a GARP coherence filter into a time-series model and probabilistic demand forecasts",
     href: "https://arxiv.org/abs/2603.23993",
   },
-  {
-    number: "04",
-    year: "2026",
-    status: "Conditionally accepted · ReStat",
-    title: "A Rationalization of the Weak Axiom of Revealed Preference",
-    copy: "An Afriat theorem for WGARP: coherent utility coalitions forbid binary reversals while allowing longer cycles and admissible counterfactual demand.",
-    illustration: "./illustrations/paper_weak_axiom_v2.webp",
-    illustrationAlt: "Overlapping utility coalitions allowing a three-choice cycle without binary reversals beside an admissible bundle on a new budget",
-    href: "https://arxiv.org/abs/1906.00296",
-  },
 ];
 
 const research: ResearchItem[] = [
+  {
+    year: "2026",
+    kind: "accepted",
+    title: "A Rationalization of the Weak Axiom of Revealed Preference",
+    authors: "Victor H. Aguiar, Per Hjertstrand, Roberto Serrano & Özgür Evren",
+    venue: "Conditionally accepted, Review of Economics and Statistics",
+    href: "https://arxiv.org/abs/1906.00296",
+  },
   {
     year: "2026",
     kind: "working",
@@ -173,14 +181,6 @@ const research: ResearchItem[] = [
     venue: "Working paper",
     href: "https://arxiv.org/abs/2603.23993",
     note: "New",
-  },
-  {
-    year: "2026",
-    kind: "working",
-    title: "A Rationalization of the Weak Axiom of Revealed Preference",
-    authors: "Victor H. Aguiar, Per Hjertstrand, Roberto Serrano & Özgür Evren",
-    venue: "Conditionally accepted, Review of Economics and Statistics",
-    href: "https://arxiv.org/abs/1906.00296",
   },
   {
     year: "2023",
@@ -339,6 +339,7 @@ const coauthors = [
 ] satisfies ReadonlyArray<{ name: string; href: string }>;
 
 const kindLabels: Record<ResearchKind, string> = {
+  accepted: "Accepted / conditionally accepted",
   working: "Working paper",
   publication: "Publication",
   short: "Short paper",
@@ -541,10 +542,10 @@ function App() {
             </blockquote>
           </div>
 
-          <div className="hero-status" aria-label="Current role, service, recognition, and languages">
+          <div className="hero-status" aria-label="Current role, industry experience, recognition, and languages">
             <div className="page-shell status-grid">
               <p><span>Now</span> Associate Professor, SFU</p>
-              <p><span>Editorial service</span> JEBO Associate Editor · through Mar 2026</p>
+              <p><span>Industry &amp; AI</span> Former Senior Economist, Amazon · AI, decision theory, and structural econometrics</p>
               <p><span>Recognition</span> Borts · Grimes · REStud</p>
               <p><span>Languages</span> English · French · Spanish</p>
             </div>
@@ -610,7 +611,7 @@ function App() {
               </div>
 
               <div className="filter-row" aria-label="Filter research">
-                {(["all", "working", "publication", "short", "chapter"] as const).map((kind) => (
+                {(["all", "accepted", "working", "publication", "short", "chapter"] as const).map((kind) => (
                   <button
                     type="button"
                     key={kind}
