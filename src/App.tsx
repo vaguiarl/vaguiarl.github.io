@@ -497,7 +497,7 @@ function App() {
 
           <nav id="primary-navigation" className={menuOpen ? "nav-open" : ""} aria-label="Primary navigation">
             <a className="nav-link" href="#research" onClick={closeMenu}>Research</a>
-            <a className="nav-link" href="/conscious-life/" onClick={closeMenu}>Lab</a>
+            <a className="nav-link" href="/conscious-life/" onClick={closeMenu}>Experiments</a>
             <a className="nav-link" href="#blogging" onClick={closeMenu}>Blogging</a>
             <a className="nav-link" href="#seminars" onClick={closeMenu}>Seminars</a>
             <a className="nav-link" href="#teaching" onClick={closeMenu}>Teaching</a>

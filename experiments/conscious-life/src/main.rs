@@ -54,7 +54,7 @@ fn run() -> Result<(), String> {
         None => None,
     };
 
-    println!("CONSCIOUS LIFE 0.2 | predator-prey ecological + social laboratory");
+    println!("CONSCIOUS LIFE 0.2 | predator-prey ecological + social simulation");
     println!(
         "grid={}x{} seed={} initial_alive={} prey={} predators={} ecology={} PD=[S:{:.1}, P:{:.1}, R:{:.1}, T:{:.1}]",
         options.config.width,

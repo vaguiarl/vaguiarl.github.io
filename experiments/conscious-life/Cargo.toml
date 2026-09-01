@@ -2,7 +2,7 @@
 name = "conscious-life"
 version = "0.2.0"
 edition = "2024"
-description = "A spatial predator-prey laboratory for cooperation and graded inner mappings"
+description = "A spatial predator-prey simulation for cooperation and graded inner mappings"
 license = "MIT"
 
 [lib]

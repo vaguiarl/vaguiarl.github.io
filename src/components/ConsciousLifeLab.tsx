@@ -551,7 +551,7 @@ export default function ConsciousLifeLab() {
         <div className="section-intro light-intro">
           <p className="section-number">03</p>
           <div>
-            <p className="eyebrow"><span /> Live laboratory · Conscious Life</p>
+            <p className="eyebrow"><span /> Computational experiment · World I</p>
             <h2 id="conscious-life-title">Can social life grow<br /><em>a point of view?</em></h2>
           </div>
           <p className="section-summary">
@@ -564,7 +564,7 @@ export default function ConsciousLifeLab() {
             <div className="lab-world-head">
               <div>
                 <span className="lab-live-dot" aria-hidden="true" />
-                {running ? "Autonomous ecology live" : "Ecology paused"}
+                {running ? "Autonomous ecology running" : "Ecology paused"}
               </div>
               <span>Epoch {metrics.epoch} · seed {metrics.seed} · 96 × 54 torus</span>
             </div>
@@ -630,14 +630,14 @@ export default function ConsciousLifeLab() {
               <article><span>Prey</span><strong>{metrics.prey.toLocaleString()}</strong><small>{percent(metrics.preyCooperation)} cooperate</small></article>
               <article><span>Predators</span><strong>{metrics.predators.toLocaleString()}</strong><small>{percent(metrics.predatorCooperation)} cooperate</small></article>
               <article className="metric-inner-life">
-                <span>Non-null inner mapping</span>
+                <span>Functional mapping · q &gt; 0</span>
                 <strong>{percent(metrics.innerLife)}</strong>
-                <small>P(q &gt; 0 | alive)</small>
+                <small>share of living agents</small>
               </article>
               <article>
-                <span>Good / evil capable</span>
+                <span>Moral distinction · q ≥ 2</span>
                 <strong>{percent(metrics.differentiated)}</strong>
-                <small>P(q ≥ 2 | alive) · peak {metrics.maxQ}</small>
+                <small>share of living agents · peak {metrics.maxQ}</small>
               </article>
               <article><span>Births / captures</span><strong>{metrics.preyBirths} / {metrics.captures}</strong><small>latest transition</small></article>
               <article><span>Predator deaths</span><strong>{metrics.predatorDeaths}</strong><small>{metrics.empty.toLocaleString()} empty sites</small></article>
@@ -671,13 +671,13 @@ export default function ConsciousLifeLab() {
           <article><span>Social selection</span><strong>Two societies</strong><p>Prey share warnings. Predators coordinate packs. Cooperation and defection evolve only within each species.</p></article>
           <article><span>q ≥ 2</span><strong>Moral distinction</strong><p>Helping and exploitation can occupy different internal states. Predation itself is ecological, not Evil.</p></article>
           <p className="lab-caveat">
-            The non-null mapping is a functional model proxy, not a probability of phenomenal sentience. Good and Evil are operational, role-relative reports about treatment within a species. If either species disappears or activity remains below 0.5% for 180 generations, the installation transparently begins a new deterministic epoch.
+            Functional mapping and moral distinction are model-defined population shares, not probabilities of phenomenal sentience. Good and Evil are operational, role-relative reports about treatment within a species. If either species disappears or activity remains below 0.5% for 180 generations, the experiment transparently begins a new deterministic epoch.
           </p>
         </div>
 
         <div className="lab-links">
           <a href="/moral-life/">Enter Moral Life · World II <span aria-hidden="true">↗</span></a>
-          <a href="/conscious-life/">Open the living installation <span aria-hidden="true">↗</span></a>
+          <a href="/conscious-life/">Open this experiment <span aria-hidden="true">↗</span></a>
           <a href="https://www.linkedin.com/pulse/can-ai-reveal-inner-life-victor-aguiar-ph-d--0fn2c/" target="_blank" rel="noreferrer">Read the public essay <span aria-hidden="true">↗</span></a>
           <a href="https://github.com/vaguiarl/vaguiarl.github.io/tree/main/experiments/conscious-life" target="_blank" rel="noreferrer">Inspect the Rust model <span aria-hidden="true">↗</span></a>
         </div>

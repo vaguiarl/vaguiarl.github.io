@@ -1,6 +1,6 @@
 # Conscious Life
 
-Version 0.2 is a fast Rust laboratory for a deliberately small question: can social cooperation select for a graded internal vocabulary inside a changing ecology?
+Version 0.2 is a fast Rust simulation for a deliberately small question: can social cooperation select for a graded internal vocabulary inside a changing ecology?
 
 The default world is a synchronous predator-prey contact process on a toroidal grid. Prey and predators are ecological species. Each species separately contains cooperators and defectors, and each cell carries a heritable consciousness grade `q`. The native simulation core has no external dependencies; the browser adapter uses `wasm-bindgen`.
 
