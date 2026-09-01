@@ -73,6 +73,37 @@ const blogArticles = [
   },
 ];
 
+const seminars = [
+  {
+    number: "01",
+    status: "Scheduled",
+    dateLead: "November 10",
+    year: "2026",
+    dateTime: "2026-11-10",
+    format: "In person · Pasadena, California",
+    institution: "California Institute of Technology",
+    title: "Invited research seminar",
+    unit: "Division of the Humanities and Social Sciences",
+    copy: "A visit to share new work with Caltech’s economics and social science community. The talk title and final logistics will be announced by the host.",
+    href: "https://www.hss.caltech.edu/news-and-events/seminars-and-conferences",
+    linkLabel: "Caltech HSS",
+  },
+  {
+    number: "02",
+    status: "Dates forthcoming",
+    dateLead: "February or March",
+    year: "2027",
+    dateTime: "2027-02",
+    format: "Two-week intensive · Ecuador",
+    institution: "FLACSO Ecuador",
+    title: "Economics of AI",
+    unit: "Doctoral Program in Development Economics",
+    copy: "A two-week invited course connecting economic reasoning, data, and contemporary artificial intelligence for doctoral researchers. Final dates are being coordinated.",
+    href: "https://www.flacso.edu.ec/sites/default/files/2026-04/Doctorado_Economia_del_Desarrollo_2026_2029_final.pdf",
+    linkLabel: "Doctoral program",
+  },
+];
+
 const featuredResearch = [
   {
     number: "01",
@@ -469,6 +500,7 @@ function App() {
             <a className="nav-link" href="#research" onClick={closeMenu}>Research</a>
             <a className="nav-link" href="#conscious-life" onClick={closeMenu}>Lab</a>
             <a className="nav-link" href="#blogging" onClick={closeMenu}>Blogging</a>
+            <a className="nav-link" href="#seminars" onClick={closeMenu}>Seminars</a>
             <a className="nav-link" href="#teaching" onClick={closeMenu}>Teaching</a>
             <a className="nav-link" href="#industry" onClick={closeMenu}>Industry / Consulting</a>
             <a className="nav-link" href="#about" onClick={closeMenu}>About</a>
@@ -684,11 +716,62 @@ function App() {
           </div>
         </section>
 
+        <section id="seminars" className="section seminars-section" aria-labelledby="seminars-title">
+          <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
+          <div className="seminar-orbit" aria-hidden="true" />
+          <div className="page-shell">
+            <div className="section-intro">
+              <p className="section-number">05</p>
+              <div>
+                <p className="eyebrow"><span /> Seminars &amp; external lectures</p>
+                <h2 id="seminars-title">The work,<br /><em>in the world.</em></h2>
+              </div>
+              <p className="section-summary">
+                Invited seminars and external teaching are where ideas meet a live room, questions sharpen, and new collaborations begin.
+              </p>
+            </div>
+
+            <div className="seminar-grid">
+              {seminars.map((seminar) => (
+                <article className="seminar-card" key={`${seminar.institution}-${seminar.year}`}>
+                  <div className="seminar-card-head">
+                    <span className="seminar-number">{seminar.number}</span>
+                    <span className="seminar-status">{seminar.status}</span>
+                  </div>
+                  <time className="seminar-date" dateTime={seminar.dateTime}>
+                    <span>{seminar.dateLead}</span>
+                    {seminar.year}
+                  </time>
+                  <p className="seminar-format">{seminar.format}</p>
+                  <div className="seminar-card-body">
+                    <p className="seminar-institution">{seminar.institution}</p>
+                    <h3>{seminar.title}</h3>
+                    <p>{seminar.copy}</p>
+                  </div>
+                  <footer className="seminar-card-foot">
+                    <span>{seminar.unit}</span>
+                    <a href={seminar.href} target="_blank" rel="noreferrer">
+                      {seminar.linkLabel} <ExternalArrow />
+                    </a>
+                  </footer>
+                </article>
+              ))}
+            </div>
+
+            <div className="seminar-invitation">
+              <p><span>Seminars · executive sessions · intensive courses</span>Bring a difficult idea and a room ready to think.</p>
+              <a href="mailto:vaguiarl@sfu.ca?subject=Seminar%20or%20external%20lecture">
+                Invite Victor to speak <ExternalArrow />
+              </a>
+            </div>
+          </div>
+        </section>
+
         <section id="teaching" className="section teaching-section" aria-labelledby="teaching-title">
           <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
           <div className="page-shell">
             <div className="section-intro light-intro">
-              <p className="section-number">05</p>
+              <p className="section-number">06</p>
               <div>
                 <p className="eyebrow"><span /> Teaching</p>
                 <h2 id="teaching-title">Ideas become clear<br /><em>when they are used.</em></h2>
@@ -746,7 +829,7 @@ function App() {
           <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
           <div className="page-shell">
             <div className="section-intro">
-              <p className="section-number">06</p>
+              <p className="section-number">07</p>
               <div>
                 <p className="eyebrow"><span /> Industry &amp; consulting</p>
                 <h2 id="industry-title">Economic structure,<br /><em>applied at scale.</em></h2>
@@ -815,7 +898,7 @@ function App() {
           <div className="page-shell">
             <div className="about-grid">
               <div className="about-heading">
-                <p className="section-number">07</p>
+                <p className="section-number">08</p>
                 <p className="eyebrow"><span /> About</p>
                 <h2 id="about-title">Solutions, theory,<br />data, <em>and the connecting tissue in between.</em></h2>
                 <figure className="about-portrait">
@@ -949,7 +1032,7 @@ function App() {
           <div className="inca-divider" aria-hidden="true"><i /><span /><i /></div>
           <div className="contact-orbit" aria-hidden="true" />
           <div className="page-shell contact-grid">
-            <p className="section-number">08</p>
+            <p className="section-number">09</p>
             <div>
               <p className="eyebrow"><span /> Contact</p>
               <h2 id="contact-title">Let’s exchange<br /><em>ideas.</em></h2>
