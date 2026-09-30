@@ -957,6 +957,7 @@ function App() {
             <div className="timeline" aria-label="Career timeline">
               <article><time>2024 to present</time><span /><p><strong>Simon Fraser University</strong>Associate Professor of Economics</p></article>
               <article><time>2025 to 2026</time><span /><p><strong>Amazon SEAS</strong>Senior Economist</p></article>
+              <article><time>2016 to 2023</time><span /><p><strong>Western University</strong>Assistant Professor, then tenured Associate Professor of Economics</p></article>
               <article><time>2012 to 2016</time><span /><p><strong>World Bank</strong>Economic consulting in Ecuador</p></article>
               <article><time>2017</time><span /><p><strong>Brown University</strong>PhD in Economics</p></article>
             </div>

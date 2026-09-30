@@ -2366,7 +2366,7 @@ a.paper-row:hover .paper-arrow {
   position: relative;
   margin: clamp(7rem, 11vw, 11rem) 0;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0;
 }
 
