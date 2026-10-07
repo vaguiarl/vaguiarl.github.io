@@ -158,6 +158,15 @@ const research: ResearchItem[] = [
   {
     year: "2026",
     kind: "working",
+    title: "The Attention Cost of Stable Matching",
+    authors: "Victor H. Aguiar & Dian Hong",
+    venue: "Working paper · September 2026",
+    href: "https://arxiv.org/abs/2609.09693",
+    note: "New",
+  },
+  {
+    year: "2026",
+    kind: "working",
     title: "Tabular Foundation Models and the Unity of Economic Behaviour",
     authors: "Victor H. Aguiar",
     venue: "Working paper",
@@ -323,6 +332,7 @@ const research: ResearchItem[] = [
 
 const coauthors = [
   { name: "Nail Kashaev", href: "https://nail.kashaev.ru/" },
+  { name: "Dian Hong", href: "https://arxiv.org/search/econ?searchtype=author&query=Hong%2C+D" },
   { name: "Per Hjertstrand", href: "https://www.ifn.se/en/researchers/affiliated-researchers/per-hjertstrand/" },
   { name: "Roberto Serrano", href: "https://economics.brown.edu/people/roberto-serrano" },
   { name: "Özgür Evren", href: "https://www.nes.ru/about/profiles/faculty/tenure-line/Ozgur-Evren" },
