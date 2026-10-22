@@ -107,7 +107,7 @@ const featuredResearch = [
   {
     number: "01",
     year: "2026",
-    status: "Conditionally accepted · ReStat",
+    status: "Accepted · ReStat",
     title: "A Rationalization of the Weak Axiom of Revealed Preference",
     copy: "An Afriat theorem for WGARP: coherent utility coalitions forbid binary reversals while allowing longer cycles and admissible counterfactual demand.",
     illustration: "./illustrations/paper_weak_axiom_v2.webp",
@@ -152,7 +152,7 @@ const research: ResearchItem[] = [
     kind: "accepted",
     title: "A Rationalization of the Weak Axiom of Revealed Preference",
     authors: "Victor H. Aguiar, Per Hjertstrand, Roberto Serrano & Özgür Evren",
-    venue: "Conditionally accepted, Review of Economics and Statistics",
+    venue: "Accepted, The Review of Economics and Statistics",
     href: "https://arxiv.org/abs/1906.00296",
   },
   {
@@ -349,7 +349,7 @@ const coauthors = [
 ] satisfies ReadonlyArray<{ name: string; href: string }>;
 
 const kindLabels: Record<ResearchKind, string> = {
-  accepted: "Accepted / conditionally accepted",
+  accepted: "Accepted",
   working: "Working paper",
   publication: "Publication",
   short: "Short paper",
