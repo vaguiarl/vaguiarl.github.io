@@ -10,11 +10,13 @@ type ResearchItem = {
   venue: string;
   href?: string;
   slidesHref?: string;
+  appendixHref?: string;
   note?: string;
 };
 
 const cvUrl = "./AguiarCV_2026.pdf";
 const entangledSlidesUrl = "./slides/entangled-choice/";
+const entangledAppendixUrl = "./appendices/separable-choice-h-representation.pdf";
 
 const blogArticles = [
   {
@@ -136,6 +138,7 @@ const featuredResearch = [
     illustrationAlt: "Two mirrored local choice rooms share a latent source while four balanced joint-outcome tiles reveal one crossed CHSH pattern that separates hidden coordination from ordinary correlation",
     href: "https://www.researchgate.net/publication/378938384_Entangled_vs_Separable_Choice",
     slidesHref: entangledSlidesUrl,
+    appendixHref: entangledAppendixUrl,
   },
   {
     number: "04",
@@ -184,6 +187,7 @@ const research: ResearchItem[] = [
     venue: "Working paper · July 2026 version",
     href: "https://www.researchgate.net/publication/378938384_Entangled_vs_Separable_Choice",
     slidesHref: entangledSlidesUrl,
+    appendixHref: entangledAppendixUrl,
     note: "Updated",
   },
   {
@@ -606,6 +610,7 @@ function App() {
                       Read paper <ExternalArrow />
                     </a>
                     {paper.slidesHref && <a className="paper-slides" href={paper.slidesHref}>Caltech slides <ExternalArrow /></a>}
+                    {paper.appendixHref && <a className="paper-slides" href={paper.appendixHref}>Online appendix <ExternalArrow /></a>}
                   </div>
                 </article>
               ))}
@@ -661,6 +666,7 @@ function App() {
                         <small>{paper.authors}</small>
                         <small>{paper.venue}</small>
                         {paper.slidesHref && <a className="paper-slides" href={paper.slidesHref}>Caltech slides <ExternalArrow /></a>}
+                        {paper.appendixHref && <a className="paper-slides" href={paper.appendixHref}>Online appendix <ExternalArrow /></a>}
                       </span>
                       {paper.note && <span className="paper-note">{paper.note}</span>}
                       {paper.href && <span className="paper-arrow" aria-hidden="true">↗</span>}

@@ -93,6 +93,12 @@ progress::-moz-progress-bar { background: var(--clay); }
   height: 4.1%;
   color: transparent;
 }
+.online-appendix-hotspot {
+  top: 62.3%;
+  left: 14.9%;
+  width: 15.7%;
+  height: 4.4%;
+}
 .appendix-hotspot:focus-visible { background: var(--white); color: var(--blue); }
 dialog {
   border: 1px solid var(--line);

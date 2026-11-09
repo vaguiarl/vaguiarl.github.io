@@ -1,5 +1,6 @@
 const el = (id) => document.getElementById(id);
 const interactivePage = 9;
+const literaturePage = 16;
 const conclusionsPage = 20;
 const alpha = el("alpha");
 const stage = el("stage");
@@ -45,7 +46,7 @@ function setTranscript(slide) {
     const template = document.createElement("template");
     template.innerHTML = slide.htmlTranscript;
     for (const link of template.content.querySelectorAll('a[href="#thought-experiment-diamond"]')) {
-      link.href = "#slide-24";
+      link.href = el("appendix-link").hash;
     }
     transcriptText.append(template.content);
   } else {
@@ -80,6 +81,7 @@ function render() {
   transcript.hidden = interactive;
   transcript.open = false;
   el("appendix-link").hidden = current !== conclusionsPage;
+  el("online-appendix-link").hidden = current !== literaturePage;
   el("progress").max = slides.length;
   el("progress").value = current;
   el("slide-count").value = `${current} / ${slides.length}`;
