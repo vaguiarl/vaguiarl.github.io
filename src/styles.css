@@ -741,6 +741,11 @@ nav {
 }
 
 .paper-action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.7rem 1rem;
   margin-top: auto;
   padding-top: 1rem;
   border-top: 1px solid currentColor;
@@ -750,8 +755,24 @@ nav {
   text-transform: uppercase;
 }
 
-.paper-action span {
-  float: right;
+.paper-action a:only-child {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Keep the full card/row clickable without nesting the independent slides link. */
+.paper-primary::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+.paper-slides {
+  position: relative;
+  z-index: 1;
+  text-decoration: underline;
+  text-underline-offset: 0.24em;
 }
 
 .research-library {
@@ -846,7 +867,8 @@ nav {
   transition: padding 180ms ease, background 180ms ease;
 }
 
-a.paper-row:hover {
+a.paper-row:hover,
+.paper-row-with-slides:hover {
   padding-right: 0.8rem;
   padding-left: 0.8rem;
   background: rgba(234, 220, 200, 0.38);
@@ -885,6 +907,14 @@ a.paper-row:hover {
   line-height: 1.5;
 }
 
+.paper-main .paper-slides {
+  display: inline-block;
+  margin-top: 0.35rem;
+  color: var(--cobalt);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
 .paper-note {
   padding: 0.33rem 0.45rem;
   border: 1px solid var(--clay);
@@ -897,7 +927,8 @@ a.paper-row:hover {
   transition: transform 180ms ease;
 }
 
-a.paper-row:hover .paper-arrow {
+a.paper-row:hover .paper-arrow,
+.paper-row-with-slides:hover .paper-arrow {
   transform: translate(3px, -3px);
 }
 

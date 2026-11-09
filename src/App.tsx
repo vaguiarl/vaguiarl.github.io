@@ -9,10 +9,12 @@ type ResearchItem = {
   authors: string;
   venue: string;
   href?: string;
+  slidesHref?: string;
   note?: string;
 };
 
 const cvUrl = "./AguiarCV_2026.pdf";
+const entangledSlidesUrl = "./slides/entangled-choice/";
 
 const blogArticles = [
   {
@@ -133,6 +135,7 @@ const featuredResearch = [
     illustration: "./illustrations/paper_entangled_v1.webp",
     illustrationAlt: "Two mirrored local choice rooms share a latent source while four balanced joint-outcome tiles reveal one crossed CHSH pattern that separates hidden coordination from ordinary correlation",
     href: "https://www.researchgate.net/publication/378938384_Entangled_vs_Separable_Choice",
+    slidesHref: entangledSlidesUrl,
   },
   {
     number: "04",
@@ -180,6 +183,7 @@ const research: ResearchItem[] = [
     authors: "Nail Kashaev, Martin Plávala & Victor H. Aguiar",
     venue: "Working paper · July 2026 version",
     href: "https://www.researchgate.net/publication/378938384_Entangled_vs_Separable_Choice",
+    slidesHref: entangledSlidesUrl,
     note: "Updated",
   },
   {
@@ -579,7 +583,7 @@ function App() {
 
             <div className="featured-grid">
               {featuredResearch.map((paper) => (
-                <a className="featured-paper" href={paper.href} target="_blank" rel="noreferrer" key={paper.title}>
+                <article className="featured-paper" key={paper.title}>
                   <div className="featured-meta">
                     <span>{paper.number}</span>
                     <span>{paper.year}</span>
@@ -597,8 +601,13 @@ function App() {
                   <p className="paper-status">{paper.status}</p>
                   <h3>{paper.title}</h3>
                   <p>{paper.copy}</p>
-                  <span className="paper-action">Read paper <ExternalArrow /></span>
-                </a>
+                  <div className="paper-action">
+                    <a className="paper-primary" href={paper.href} target="_blank" rel="noreferrer" aria-label={`Read paper: ${paper.title}`}>
+                      Read paper <ExternalArrow />
+                    </a>
+                    {paper.slidesHref && <a className="paper-slides" href={paper.slidesHref}>Caltech slides <ExternalArrow /></a>}
+                  </div>
+                </article>
               ))}
             </div>
 
@@ -644,18 +653,23 @@ function App() {
                       <span className="paper-year">{paper.year}</span>
                       <span className="paper-type">{kindLabels[paper.kind]}</span>
                       <span className="paper-main">
-                        <strong>{paper.title}</strong>
+                        <strong>
+                          {paper.slidesHref ? (
+                            <a className="paper-primary" href={paper.href} target="_blank" rel="noreferrer">{paper.title}</a>
+                          ) : paper.title}
+                        </strong>
                         <small>{paper.authors}</small>
                         <small>{paper.venue}</small>
+                        {paper.slidesHref && <a className="paper-slides" href={paper.slidesHref}>Caltech slides <ExternalArrow /></a>}
                       </span>
                       {paper.note && <span className="paper-note">{paper.note}</span>}
                       {paper.href && <span className="paper-arrow" aria-hidden="true">↗</span>}
                     </>
                   );
-                  return paper.href ? (
+                  return paper.href && !paper.slidesHref ? (
                     <a className="paper-row" href={paper.href} target="_blank" rel="noreferrer" key={paper.title}>{content}</a>
                   ) : (
-                    <article className="paper-row" key={paper.title}>{content}</article>
+                    <article className={`paper-row${paper.slidesHref ? " paper-row-with-slides" : ""}`} key={paper.title}>{content}</article>
                   );
                 })}
                 {visibleResearch.length === 0 && (

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f0e4">
+  <meta name="description" content="Caltech seminar slides on separable choice, finite replicas and an interactive CHSH example.">
+  <title>Entangled vs. Separable Choice · Caltech seminar</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="stylesheet" href="./slides.css">
+  <script src="./slides.js" type="module"></script>
+</head>
+<body>
+  <header class="deck-bar">
+    <a class="home" href="../../#research">Victor H. Aguiar</a>
+    <span class="deck-name">Entangled vs. Separable Choice</span>
+    <nav aria-label="Deck tools">
+      <a href="./caltech-seminar.pdf">PDF</a>
+      <button id="overview" type="button" aria-haspopup="dialog">Overview</button>
+      <button id="fullscreen" type="button" aria-pressed="false" hidden>Full screen</button>
+    </nav>
+  </header>
+  <progress id="progress" value="1" max="25" aria-label="Deck progress"></progress>
+
+  <main class="deck">
+    <h1 class="sr-only">Entangled vs. Separable Choice</h1>
+    <section id="stage" class="stage" aria-label="Current slide">
+      <p id="load-message">Loading slides…</p>
+      <img id="slide-image" alt="" hidden>
+
+      <article id="chsh-slide" class="interactive-slide" aria-labelledby="chsh-title" hidden>
+        <h2 id="chsh-title">No Signalling Is Necessary but Not Sufficient</h2>
+        <svg class="slide-rule" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 9H400V6H430V2H570V6H600V9H1000"/>
+        </svg>
+        <p class="intro">Move <i>α</i> to change coordination across covariate pairs. Every individual action keeps probability ½.</p>
+        <div class="example">
+          <div class="control-panel">
+            <div class="range-label">
+              <label for="alpha">α</label>
+              <output id="alpha-value" for="alpha">0.350</output>
+            </div>
+            <input id="alpha" type="range" min="0.25" max="0.50" step="0.005" value="0.35" aria-describedby="alpha-help">
+            <div class="range-label endpoints" aria-hidden="true">
+              <span>¼</span><span>⅜</span><span>½</span>
+            </div>
+            <p id="alpha-help" class="beta-line">β = ½ − α = <output id="beta-value" for="alpha">0.150</output></p>
+            <p class="score-line">S<sub>1</sub> = 8(α − β) = <output id="score-value" for="alpha">1.60</output></p>
+            <div class="score-track" aria-hidden="true">
+              <span id="score-fill"></span>
+              <span class="cutoff"></span>
+            </div>
+            <div class="range-label endpoints" aria-hidden="true">
+              <span>0</span><span>2</span><span>4</span>
+            </div>
+            <p id="verdict" class="verdict" role="status">Within the separable bound</p>
+          </div>
+          <figure>
+            <figcaption>Joint probabilities</figcaption>
+            <table class="probabilities">
+              <thead><tr><th scope="col">Frodo / Sam</th><th scope="col">(a, 0)</th><th scope="col">(b, 0)</th><th scope="col">(v, 1)</th><th scope="col">(w, 1)</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">(a, 0)</th><td class="ss" data-weight="alpha">.350</td><td class="ss" data-weight="beta">.150</td><td class="sl" data-weight="alpha">.350</td><td class="sl" data-weight="beta">.150</td></tr>
+                <tr><th scope="row">(b, 0)</th><td class="ss" data-weight="beta">.150</td><td class="ss" data-weight="alpha">.350</td><td class="sl" data-weight="beta">.150</td><td class="sl" data-weight="alpha">.350</td></tr>
+                <tr><th scope="row">(v, 1)</th><td class="ls" data-weight="alpha">.350</td><td class="ls" data-weight="beta">.150</td><td class="ll" data-weight="beta">.150</td><td class="ll" data-weight="alpha">.350</td></tr>
+                <tr><th scope="row">(w, 1)</th><td class="ls" data-weight="beta">.150</td><td class="ls" data-weight="alpha">.350</td><td class="ll" data-weight="alpha">.350</td><td class="ll" data-weight="beta">.150</td></tr>
+              </tbody>
+            </table>
+            <p class="matrix-note">Each coloured block is one covariate pair.</p>
+          </figure>
+        </div>
+        <p class="threshold-note">At α = ⅜, S<sub>1</sub> = 2. Above ⅜, the rule is nonseparable even though the individual marginals stay fixed.</p>
+      </article>
+
+      <a id="appendix-link" class="appendix-hotspot" href="#slide-24" hidden>Appendix</a>
+      <noscript><p><a href="./caltech-seminar.pdf">Open the seminar slides as a PDF.</a></p></noscript>
+    </section>
+    <nav class="slide-nav" aria-label="Slide navigation">
+      <a id="previous" href="#slide-1" aria-label="Previous slide">← Previous</a>
+      <output id="slide-count" aria-live="polite">1 / 25</output>
+      <a id="next" href="#slide-2" aria-label="Next slide">Next →</a>
+    </nav>
+    <details id="transcript" hidden>
+      <summary>Slide text</summary>
+      <div id="transcript-text"></div>
+    </details>
+    <p class="shortcuts">← → to navigate · O for overview · F for full screen</p>
+  </main>
+
+  <dialog id="slide-menu" aria-labelledby="slide-menu-title">
+    <header>
+      <h2 id="slide-menu-title">Slides</h2>
+      <form method="dialog"><button>Close</button></form>
+    </header>
+    <ol id="slide-list"></ol>
+  </dialog>
+</body>
+</html>
