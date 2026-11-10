@@ -1,7 +1,5 @@
 const el = (id) => document.getElementById(id);
-const interactivePage = 9;
-const literaturePage = 16;
-const conclusionsPage = 20;
+const interactiveTitle = el("chsh-title").textContent;
 const alpha = el("alpha");
 const stage = el("stage");
 const image = el("slide-image");
@@ -68,7 +66,7 @@ function render() {
   const requested = Number(location.hash.match(/^#slide-(\d+)$/)?.[1] || 1);
   current = Math.max(1, Math.min(slides.length, requested));
   const slide = slides[current - 1];
-  const interactive = current === interactivePage;
+  const interactive = slide.title === interactiveTitle;
   stage.setAttribute("aria-label", `Slide ${current}: ${slide.title}`);
   el("load-message").hidden = true;
   el("chsh-slide").hidden = !interactive;
@@ -80,8 +78,8 @@ function render() {
   }
   transcript.hidden = interactive;
   transcript.open = false;
-  el("appendix-link").hidden = current !== conclusionsPage;
-  el("online-appendix-link").hidden = current !== literaturePage;
+  el("appendix-link").hidden = slide.title !== "Conclusions";
+  el("online-appendix-link").hidden = slide.title !== "Relation with the Literature";
   el("progress").max = slides.length;
   el("progress").value = current;
   el("slide-count").value = `${current} / ${slides.length}`;
@@ -166,7 +164,7 @@ try {
     const item = document.createElement("li");
     const link = document.createElement("a");
     link.href = `#slide-${slide.number}`;
-    link.textContent = slide.number === interactivePage ? `${slide.title} (interactive)` : slide.title;
+    link.textContent = slide.title === interactiveTitle ? `${slide.title} (interactive)` : slide.title;
     item.append(link);
     el("slide-list").append(item);
   }
