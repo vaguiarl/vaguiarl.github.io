@@ -832,8 +832,11 @@ function App() {
               <div className="course-column">
                 <div className="course-group">
                   <p className="course-label">Fall 2026 · SFU</p>
-                  <a href="https://www.sfu.ca/outlines.html?2026/fall/econ/342/d100" target="_blank" rel="noreferrer">
-                    <span>ECON 342</span><strong>International Trade</strong><ExternalArrow />
+                  <a href="https://vaguiarl.github.io/econ342-codex-labs/" target="_blank" rel="noreferrer">
+                    <span>ECON 342</span><strong>International Trade · Interactive classes</strong><ExternalArrow />
+                  </a>
+                  <a href="https://vaguiarl.github.io/econ342-codex-labs/final-project-tools/" target="_blank" rel="noreferrer">
+                    <span>New class</span><strong>Specialization, risk &amp; causal reasoning</strong><ExternalArrow />
                   </a>
                   <a href="https://www.sfu.ca/outlines.html?2026/fall/econ/803/g100" target="_blank" rel="noreferrer">
                     <span>ECON 803</span><strong>Microeconomic Theory I</strong><ExternalArrow />
