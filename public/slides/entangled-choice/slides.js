@@ -16,7 +16,7 @@ function updateExample() {
   const a = Math.round(Number(alpha.value) * 1000);
   const b = 500 - a;
   const score = 8 * (a - b);
-  const exceeds = score > 2000;
+  const exceeds = Math.abs(score) > 2000;
   const aText = (a / 1000).toFixed(3);
   const bText = (b / 1000).toFixed(3);
   el("alpha-value").value = aText;
@@ -26,12 +26,13 @@ function updateExample() {
     cell.textContent = (cell.dataset.weight === "alpha" ? aText : bText).slice(1);
   }
   const fill = el("score-fill");
-  fill.style.width = `${score / 40}%`;
+  fill.style.left = `${50 + Math.min(0, score) / 80}%`;
+  fill.style.width = `${Math.abs(score) / 80}%`;
   fill.dataset.violates = exceeds;
   const verdict = el("verdict");
   verdict.dataset.violates = exceeds;
-  const description = exceeds ? "Exceeds the separable bound" :
-    score === 2000 ? "At the separable bound" : "Within the separable bound";
+  const description = exceeds ? (score < 0 ? "Nonseparable: S₁ < −2" : "Nonseparable: S₁ > 2") :
+    Math.abs(score) === 2000 ? "Separable: |S₁| = 2" : "Separable: |S₁| < 2";
   if (verdict.textContent !== description) verdict.textContent = description;
 }
 alpha.addEventListener("input", updateExample);

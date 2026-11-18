@@ -156,9 +156,11 @@ output, .probabilities td { font-variant-numeric: tabular-nums; }
   background: #e5dac9;
   margin: .35em 0 .2em;
 }
-#score-fill { display: block; width: 40%; height: 100%; background: var(--blue); border-radius: inherit; }
+#score-fill { position: absolute; left: 50%; width: 20%; height: 100%; background: var(--blue); border-radius: inherit; }
 #score-fill[data-violates="true"] { background: var(--clay); }
-.cutoff { position: absolute; left: 50%; top: -.18em; height: .86em; border-left: 2px solid var(--ink); }
+.cutoff { position: absolute; top: -.18em; height: .86em; border-left: 2px solid var(--ink); }
+.cutoff.low { left: 25%; }
+.cutoff.high { left: 75%; }
 .verdict { margin: .45em 0 0; color: var(--blue); font-weight: bold; }
 .verdict[data-violates="true"] { color: var(--clay); }
 figure { margin: 0; }

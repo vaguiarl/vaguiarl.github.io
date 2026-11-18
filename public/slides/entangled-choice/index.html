@@ -40,20 +40,20 @@
               <label for="alpha">α</label>
               <output id="alpha-value" for="alpha">0.350</output>
             </div>
-            <input id="alpha" type="range" min="0.25" max="0.50" step="0.005" value="0.35" aria-describedby="alpha-help">
+            <input id="alpha" type="range" min="0" max="0.50" step="0.005" value="0.35" aria-describedby="alpha-help">
             <div class="range-label endpoints" aria-hidden="true">
-              <span>¼</span><span>⅜</span><span>½</span>
+              <span>0</span><span>⅛</span><span>¼</span><span>⅜</span><span>½</span>
             </div>
             <p id="alpha-help" class="beta-line">β = ½ − α = <output id="beta-value" for="alpha">0.150</output></p>
             <p class="score-line">S<sub>1</sub> = 8(α − β) = <output id="score-value" for="alpha">1.60</output></p>
             <div class="score-track" aria-hidden="true">
               <span id="score-fill"></span>
-              <span class="cutoff"></span>
+              <span class="cutoff low"></span><span class="cutoff high"></span>
             </div>
             <div class="range-label endpoints" aria-hidden="true">
-              <span>0</span><span>2</span><span>4</span>
+              <span>−4</span><span>−2</span><span>0</span><span>2</span><span>4</span>
             </div>
-            <p id="verdict" class="verdict" role="status">Within the separable bound</p>
+            <p id="verdict" class="verdict" role="status">Separable: |S₁| &lt; 2</p>
           </div>
           <figure>
             <figcaption>Joint probabilities</figcaption>
@@ -69,7 +69,7 @@
             <p class="matrix-note">Each coloured block is one covariate pair.</p>
           </figure>
         </div>
-        <p class="threshold-note">At α = ⅜, S<sub>1</sub> = 2. Above ⅜, the rule is nonseparable even though the individual marginals stay fixed.</p>
+        <p class="threshold-note">This rule is separable for ⅛ ≤ α ≤ ⅜. Below ⅛ or above ⅜ it is nonseparable, even though individual marginals stay fixed.</p>
       </article>
 
       <a id="appendix-link" class="appendix-hotspot" href="#slide-22" hidden>Appendix</a>
